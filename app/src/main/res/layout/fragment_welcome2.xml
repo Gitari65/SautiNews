@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".WelcomeFragment2">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view2"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/animation_people" />
+
+        <TextView
+            android:id="@+id/textView_welcome2"
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+
+            android:layout_height="wrap_content"
+
+            android:textSize="20sp"
+            android:text="
+Lorem ipsum dolor sit amet, consectetur a, ut elementum massa faucibus." />
+
+    </LinearLayout>
+
+</FrameLayout>
