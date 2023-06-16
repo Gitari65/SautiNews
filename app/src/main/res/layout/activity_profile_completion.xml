@@ -6,4 +6,66 @@
     android:layout_height="match_parent"
     tools:context=".ProfileCompletionActivity">
 
+    <LinearLayout
+        android:layout_width="354dp"
+        android:layout_height="669dp"
+        android:layout_marginTop="44dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:layout_gravity="center"
+            android:text="Complete your Profile"
+            android:fontFamily="@font/roboto_bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:layout_gravity="center"
+            android:text="Your personal data is safe with us."
+            android:fontFamily="@font/roboto_medium"/>
+
+        <ImageView
+            android:id="@+id/img_addphoto"
+            android:layout_width="96dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:background="@drawable/add_photo" />
+
+        <EditText
+            android:id="@+id/edtTxtFirstName"
+            android:layout_width="209dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:inputType="textPersonName"
+            android:text="First Name" />
+        <EditText
+            android:id="@+id/edtTxtSecondName"
+            android:layout_width="209dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:inputType="textPersonName"
+            android:text="First Name" />
+        <EditText
+            android:id="@+id/edtTxtFirstName"
+            android:layout_width="209dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:inputType="textPersonName"
+            android:text="First Name" />
+        <TextView
+            android:id="@+id/edtTxtFirstName"
+            android:layout_width="209dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Date of Birth"
+           />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
