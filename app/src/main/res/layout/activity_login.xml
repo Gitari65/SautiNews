@@ -34,15 +34,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:text="Input your email and password to continue"
             android:textSize="21sp" />
 
         <EditText
             android:id="@+id/editTextTextEmailAddress"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="30dp"
             android:ems="10"
             android:hint="Email"
             android:inputType="textEmailAddress" />
@@ -50,7 +50,7 @@
         <EditText
             android:id="@+id/editTextTextPassword"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
+            android:layout_height="48dp"
             android:layout_marginTop="10dp"
             android:ems="10"
             android:hint="Password"
@@ -60,7 +60,7 @@
             android:id="@+id/button_login"
             android:layout_width="match_parent"
             android:layout_height="63dp"
-
+            android:text="Login"
             android:layout_marginTop="10dp"
             />
 
