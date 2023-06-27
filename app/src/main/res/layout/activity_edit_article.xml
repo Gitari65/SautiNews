@@ -134,6 +134,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imageButton_alignLeft"
         app:srcCompat="@drawable/align_centre_button"
          />
 
@@ -141,26 +144,33 @@
         android:id="@+id/imageButton_alignLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/align_left_button"
-        tools:layout_editor_absoluteX="48dp"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imageButton_alignRight"
+        app:layout_constraintStart_toStartOf="@id/imageButton_alignCentre"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:srcCompat="@drawable/align_left_button" />
 
     <ImageButton
         android:id="@+id/imageButton_alignRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/align_right_button"
-        tools:layout_editor_absoluteX="205dp"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imageButton_alignjustify"
+        app:layout_constraintStart_toStartOf="@id/imageButton_alignLeft"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:srcCompat="@drawable/align_right_button" />
 
     <ImageButton
         android:id="@+id/imageButton_alignjustify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/align_justify_button"
-
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintStart_toStartOf="@id/imageButton_alignRight"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imageButton_alignLeft" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
