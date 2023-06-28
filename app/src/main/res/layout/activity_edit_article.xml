@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,7 +7,11 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".EditArticleActivity">
-
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:orientation="vertical">
   <LinearLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -27,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
-        android:text=" Edit "
+        android:text=" Create... "
         android:textSize="22sp"
         android:fontFamily="@font/roboto_medium"/>
 
@@ -40,13 +44,13 @@
 
     <TextView
         android:id="@+id/button_publish"
-        android:layout_width="79dp"
+        android:layout_width="88dp"
         android:layout_height="48dp"
-        android:gravity="center"
-        android:textSize="18sp"
         android:background="@drawable/orange_border"
+        android:gravity="center"
         android:padding="10dp"
-        android:text="Publish" />
+        android:text="Publish"
+        android:textSize="18sp" />
 
   </LinearLayout>
   <LinearLayout
@@ -88,11 +92,11 @@
           android:layout_alignParentEnd="true"
           android:layout_alignParentBottom="true"
 
-          android:layout_marginStart="242dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="77dp"
-          android:layout_marginBottom="-1dp"
-          app:srcCompat="@drawable/pencil" />
+          android:layout_marginStart="240dp"
+          android:layout_marginTop="6dp"
+          android:layout_marginEnd="78dp"
+          android:layout_marginBottom="1dp"
+          app:srcCompat="@drawable/pencil_icon1" />
     </RelativeLayout>
 
 
@@ -112,6 +116,7 @@
       android:layout_width="match_parent"
       android:layout_height="57dp"
       android:layout_marginTop="10dp"
+      android:background="#75CCCBCB"
       android:inputType="textPersonName"
       android:hint="Article Title" />
   <TextView
@@ -123,32 +128,54 @@
       android:fontFamily="@font/roboto_medium"
       android:text=" Article " />
 
-
-
-  <androidx.constraintlayout.widget.ConstraintLayout
+<HorizontalScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+  <LinearLayout
       android:layout_width="match_parent"
+      android:orientation="horizontal"
       android:layout_height="wrap_content">
 
+
+    <ImageButton
+        android:id="@+id/undoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/redoButton"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/undo_icon" />
+    <ImageButton
+        android:id="@+id/redoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imageButton_alignCentre"
+        app:layout_constraintStart_toEndOf="@id/undoButton"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/redo_icon" />
     <ImageButton
         android:id="@+id/imageButton_alignCentre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/undoButton"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/imageButton_alignLeft"
         app:srcCompat="@drawable/align_centre_button"
-         />
-
+        />
     <ImageButton
         android:id="@+id/imageButton_alignLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/imageButton_alignRight"
-        app:layout_constraintStart_toStartOf="@id/imageButton_alignCentre"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imageButton_alignCentre"
 
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/align_left_button" />
 
     <ImageButton
@@ -157,22 +184,114 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/imageButton_alignjustify"
-        app:layout_constraintStart_toStartOf="@id/imageButton_alignLeft"
+        app:layout_constraintStart_toEndOf="@id/imageButton_alignLeft"
         app:layout_constraintTop_toTopOf="parent"
-
         app:srcCompat="@drawable/align_right_button" />
-
     <ImageButton
         android:id="@+id/imageButton_alignjustify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/align_justify_button"
-        app:layout_constraintStart_toStartOf="@id/imageButton_alignRight"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/imageButton_alignLeft" />
+        app:layout_constraintEnd_toStartOf="@id/decreaseFontSizeButton"
+        app:layout_constraintStart_toEndOf="@id/imageButton_alignRight"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/align_right_button" />
+    <ImageButton
+        android:id="@+id/decreaseFontSizeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imageButton_alignjustify"
+        app:layout_constraintEnd_toStartOf="@id/increaseFontSizeButton"
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/decrease_font_icon" />
+    <ImageButton
+        android:id="@+id/increaseFontSizeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/decreaseFontSizeButton"
+        app:layout_constraintEnd_toStartOf="@id/bulletListButton"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/increase_font_icon" />
+    <ImageButton
+        android:id="@+id/bulletListButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/increaseFontSizeButton"
+        app:layout_constraintEnd_toStartOf="@id/numberedListButton"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bullet_list_icon" />
+    <ImageButton
+        android:id="@+id/numberedListButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/bulletListButton"
+        app:layout_constraintEnd_toStartOf="@id/boldButton"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bullet_list_icon" />
+    <ImageButton
+        android:id="@+id/boldButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/numberedListButton"
+        app:layout_constraintEnd_toStartOf="@id/italicButton"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bold_icon" />
+    <ImageButton
+        android:id="@+id/italicButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/boldButton"
+        app:layout_constraintEnd_toStartOf="@id/underlineButton"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_italic" />
+    <ImageButton
+        android:id="@+id/underlineButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/italicButton"
+        app:layout_constraintEnd_toStartOf="@id/spellCheckButton"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bullet_list_icon" />
+
+    <ImageButton
+        android:id="@+id/spellCheckButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/underlineButton"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:srcCompat="@drawable/spellcheck_icon" />
+
+  </LinearLayout>
+</HorizontalScrollView>
+
+
+    <EditText
+        android:id="@+id/editTextContent"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#75CCCBCB"
+        android:gravity="start|top"
+        android:layout_marginBottom="20dp"
+        android:hint="Write your article here..."
+        android:inputType="textMultiLine" />
 
 
 </LinearLayout>
+</ScrollView>
