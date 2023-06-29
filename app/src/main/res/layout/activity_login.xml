@@ -39,22 +39,30 @@
             android:textSize="21sp" />
 
         <EditText
-            android:id="@+id/editTextTextEmailAddress"
+            android:id="@+id/editTextLoginEmail"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="59dp"
             android:layout_marginTop="30dp"
             android:ems="10"
             android:hint="Email"
             android:inputType="textEmailAddress" />
 
-        <EditText
-            android:id="@+id/editTextTextPassword"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edtTxtlogin_password"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:hint="Password"
-            android:inputType="textPassword" />
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword"
+                />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/button_login"
@@ -63,6 +71,15 @@
             android:text="Login"
             android:layout_marginTop="10dp"
             />
+
+        <TextView
+            android:id="@+id/textView_signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="10dp"
+            android:text="@string/signup_text"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/textView_forgotPassword"
@@ -82,7 +99,7 @@
             android:textSize="21sp" />
 
         <com.google.android.gms.common.SignInButton
-            android:id="@+id/bt_sign_in"
+            android:id="@+id/google_sign_in_button"
             android:layout_width="wrap_content"
             android:layout_height="45dp"
             android:layout_gravity="center"

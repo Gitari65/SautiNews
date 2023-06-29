@@ -84,17 +84,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         // Sign-in success, update UI with the signed-in user's information
                         FirebaseUser user = firebaseAuth.getCurrentUser();
                         if (task.getResult().getAdditionalUserInfo().isNewUser()) {
-                            // New user, perform additional signup logic
-                            // For example, you can save the user's details to a database
-                            String name = user.getDisplayName();
-                            String email = user.getEmail();
-                            String userId = user.getUid();
-
-                            // Perform your signup logic here
-
-                            Toast.makeText(this, "Sign-up successful: " + name, Toast.LENGTH_SHORT).show();
+                            // New user, redirect to register activity
+                            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                            intent.putExtra("email", user.getEmail());
+                            startActivity(intent);
+                            finish();
                         } else {
+                            // Existing user, continue with main activity
                             Toast.makeText(this, "Sign-in successful: " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                            // Add your logic for the main activity
                         }
                     } else {
                         // If sign-in fails, display a message to the user.
@@ -102,6 +100,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     }
                 });
     }
+
+
+
+
+
 
 
     public void onConnected(Bundle bundle) {
