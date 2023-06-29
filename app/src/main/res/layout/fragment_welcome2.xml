@@ -27,8 +27,7 @@
             android:layout_height="wrap_content"
 
             android:textSize="20sp"
-            android:text="
-Lorem ipsum dolor sit amet, consectetur a, ut elementum massa faucibus." />
+            android:text="@string/stay_connected" />
 
     </LinearLayout>
 

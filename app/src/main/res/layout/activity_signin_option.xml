@@ -26,6 +26,7 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/animation_welcome" />
 
+
     <com.google.android.gms.common.SignInButton
         android:id="@+id/bt_sign_in"
         android:layout_width="258dp"

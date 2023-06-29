@@ -27,42 +27,77 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/roboto_bold"
-            android:text="Create New Password"
+            android:text="Create Account"
             android:textSize="27sp" />
 
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="81dp"
-            android:layout_gravity="center"
             android:layout_height="74dp"
+            android:layout_gravity="center"
             app:srcCompat="@drawable/icon_user1" />
 
         <EditText
-            android:id="@+id/editTextTextEmailAddress"
+            android:id="@+id/editTextCreateAccount"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
+            android:layout_height="56dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:background="#75CCCBCB"
             android:ems="10"
             android:hint="Email"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:paddingLeft="10dp" />
 
-        <EditText
-            android:id="@+id/editTextTextPassword"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edtTxtSignup_password"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:hint="Password"
-            android:inputType="textPassword" />
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edtTxtConfirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Confirm Password"
+                android:inputType="textPassword" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/button_login"
+            android:id="@+id/button_signup"
             android:layout_width="match_parent"
             android:layout_height="63dp"
-            android:text="Confirm"
             android:layout_marginTop="10dp"
-            />
+            android:text="Signup" />
 
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_sign_up_button"
+            android:layout_width="55dp"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp" />
 
     </LinearLayout>
 
