@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 public class WelcomeMainActivity extends AppCompatActivity {
     ViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -14,5 +15,6 @@ public class WelcomeMainActivity extends AppCompatActivity {
         viewPager=findViewById(R.id.viewpager);
        SimpleFragmentPageAdapter simpleFragmentPageAdapter=new SimpleFragmentPageAdapter(getSupportFragmentManager());
        viewPager.setAdapter(simpleFragmentPageAdapter);
+
     }
 }
