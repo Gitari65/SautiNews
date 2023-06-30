@@ -55,7 +55,7 @@
             android:paddingLeft="10dp" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/edtTxtSignup_password"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:errorEnabled="true"
@@ -63,6 +63,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
+                android:id="@+id/edtTxtSignup_password"
                 android:layout_height="wrap_content"
                 android:hint="Password"
                 android:inputType="textPassword" />
@@ -71,7 +72,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/edtTxtConfirm_password"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:errorEnabled="true"
@@ -79,6 +80,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
+                android:id="@+id/edtTxtConfirm_password"
                 android:layout_height="wrap_content"
                 android:hint="Confirm Password"
                 android:inputType="textPassword" />
