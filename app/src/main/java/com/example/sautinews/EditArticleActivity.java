@@ -40,6 +40,7 @@ public class EditArticleActivity extends AppCompatActivity {
     private ImageButton redoButton;
     private ImageButton spellCheckButton;
 
+    private  UndoManager undoManager;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class EditArticleActivity extends AppCompatActivity {
         undoButton = findViewById(R.id.undoButton);
         redoButton = findViewById(R.id.redoButton);
         spellCheckButton = findViewById(R.id.spellCheckButton);
-
+        undoManager = new UndoManager(editText);
         // Set OnClickListener for the boldButton
         boldButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,6 +205,22 @@ public class EditArticleActivity extends AppCompatActivity {
         }
 
         editText.setText(spannable);
+        // Set TextWatcher for the EditText to track changes
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Update the UndoManager on text changes
+                undoManager.onTextChanged(start, before, count);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     private void toggleUnderline() {
@@ -337,19 +354,7 @@ public class EditArticleActivity extends AppCompatActivity {
         editText.setText(spannable);
     }
 
-    private void undo() {
-        // Perform the undo operation
-//        if (editText.undo) {
-//            editText.undo();
-//        }
-    }
 
-    private void redo() {
-        // Perform the redo operation
-//        if (editText.canRedo()) {
-//            editText.redo();
-//        }
-    }
 
     private void spellCheck() {
         // Perform the spell check operation
@@ -366,4 +371,17 @@ public class EditArticleActivity extends AppCompatActivity {
         }
 
         return false;
-    }}
+    }
+    private void undo() {
+        if (undoManager.canUndo()) {
+            undoManager.undo();
+        }
+    }
+
+    private void redo() {
+        if (undoManager.canRedo()) {
+            undoManager.redo();
+        }
+    }
+
+}
