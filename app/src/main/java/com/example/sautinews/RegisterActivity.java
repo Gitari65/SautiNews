@@ -1,7 +1,10 @@
 package com.example.sautinews;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -55,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity {
         buttonSignUp = findViewById(R.id.button_signup);
         googleSignUpButton = findViewById(R.id.google_sign_up_button);
         progressBar = findViewById(R.id.progressBarRegister);
-
+        createNotificationChannel();
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,15 +134,30 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleGoogleSignInResult(result);
+            if (result != null) {
+                handleGoogleSignInResult(result);
+            }
         }
     }
-
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "channel_id";
+            CharSequence channelName = "Channel Name";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+    }
     private void handleGoogleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             // Google sign-in was successful, authenticate with Firebase
             GoogleSignInAccount account = result.getSignInAccount();
-            firebaseAuthWithGoogle(account);
+            if (account != null) {
+                firebaseAuthWithGoogle(account);
+            }
         } else {
             Toast.makeText(this, "Google sign-in failed. Please try again.", Toast.LENGTH_SHORT).show();
         }
@@ -157,7 +175,7 @@ public class RegisterActivity extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         } else {
-                            Toast.makeText(RegisterActivity.this, "Google sign-in failed. Please try again.",
+                            Toast.makeText(RegisterActivity.this, "Google sign-in failed. Please try Again.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
