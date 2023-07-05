@@ -9,19 +9,24 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.text.style.AlignmentSpan;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.BulletSpan;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.sql.Timestamp;
+import java.util.HashMap;
 
 public class EditArticleActivity extends AppCompatActivity {
 
@@ -41,6 +46,10 @@ public class EditArticleActivity extends AppCompatActivity {
     private ImageButton spellCheckButton;
 
     private  UndoManager undoManager;
+    private TextView textViewdesc;
+    private EditText editTextArticleTitle;
+    private ImageView imageViewArticlePicture;
+    private long timestamp;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +57,9 @@ public class EditArticleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_article);
 
         // Initialize your EditText and ImageButton variables
-        editText = findViewById(R.id.editTextContent);
+        editText = findViewById(R.id.editTextArticleContent);
+        imageViewArticlePicture=findViewById(R.id.imageViewArticleCoverPicture);
+        editTextArticleTitle=findViewById(R.id.editTextArticleTitle);
         boldButton = findViewById(R.id.boldButton);
         italicButton = findViewById(R.id.italicButton);
         underlineButton = findViewById(R.id.underlineButton);
@@ -221,6 +232,19 @@ public class EditArticleActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+    }
+    //Save and piblish method for the Article
+    public void finishArticle(String Status)
+    {
+        timestamp=System.currentTimeMillis();
+        String title=editTextArticleTitle.getText().toString();
+        String Content=editText.getText().toString();
+        String currentId=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference myRef=FirebaseDatabase.getInstance().getReference();
+        HashMap<Object,Object> artcleMap=new HashMap<>();
+        artcleMap.put("ArticleTitle",title);
+        artcleMap.put("ArticleContent",Content);
+
     }
 
     private void toggleUnderline() {
