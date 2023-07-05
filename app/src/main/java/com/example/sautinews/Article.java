@@ -22,13 +22,7 @@ public class Article {
         Author = author;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
-    }
 
     public int getViews() {
         return Views;
@@ -55,7 +49,16 @@ public class Article {
     }
 
     private String Author;
-    private Timestamp timestamp;
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    private Long timestamp;
     private int Views;
     private int Likes;
     private String Comments;

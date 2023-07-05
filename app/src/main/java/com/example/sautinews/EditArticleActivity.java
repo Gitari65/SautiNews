@@ -19,8 +19,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -240,11 +244,27 @@ public class EditArticleActivity extends AppCompatActivity {
         String title=editTextArticleTitle.getText().toString();
         String Content=editText.getText().toString();
         String currentId=FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference myRef=FirebaseDatabase.getInstance().getReference();
+        DatabaseReference myRef=FirebaseDatabase.getInstance().getReference().child("Article");
         HashMap<Object,Object> artcleMap=new HashMap<>();
         artcleMap.put("ArticleTitle",title);
         artcleMap.put("ArticleContent",Content);
         artcleMap.put("timeStamp",timestamp);
+        myRef.setValue(artcleMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful())
+                {
+
+                }else {
+
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
 
     }
 
