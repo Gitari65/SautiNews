@@ -244,6 +244,7 @@ public class EditArticleActivity extends AppCompatActivity {
         HashMap<Object,Object> artcleMap=new HashMap<>();
         artcleMap.put("ArticleTitle",title);
         artcleMap.put("ArticleContent",Content);
+        artcleMap.put("timeStamp",timestamp);
 
     }
 
