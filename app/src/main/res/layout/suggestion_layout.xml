@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/orange"
+    android:background="@drawable/round_edged_suggestion"
     android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/suggestion_picture"
-        android:layout_width="391dp"
-        android:layout_height="395dp"
+        android:layout_width="298dp"
+        android:layout_height="306dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:background="@drawable/account_box" />
+        android:layout_marginStart="61dp"
+        android:layout_marginEnd="52dp"
+        android:background="@android:drawable/ic_menu_gallery" />
 
     <TextView
-        android:id="@+id/suugestion_text"
-        android:layout_width="511dp"
+        android:id="@+id/suggestion_text"
+        android:layout_width="wrap_content"
         android:layout_height="326dp"
 
         android:layout_alignParentStart="true"
