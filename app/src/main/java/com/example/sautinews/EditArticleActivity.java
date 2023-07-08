@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +42,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class EditArticleActivity extends AppCompatActivity {
-
+private ProgressBar progressBar;
     private EditText editText;
     private ImageButton boldButton;
     private ImageButton italicButton;
@@ -79,6 +80,7 @@ public class EditArticleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_article);
 
         // Initialize your EditText and ImageButton variables
+        progressBar=findViewById(R.id.progressBarEdit);
         editText = findViewById(R.id.editTextArticleContent);
         imageViewArticlePicture=findViewById(R.id.imageViewArticleCoverPicture);
         editTextArticleTitle=findViewById(R.id.editTextArticleTitle);
@@ -211,7 +213,7 @@ public class EditArticleActivity extends AppCompatActivity {
             }
         });
         // Set OnClickListener for the publish textView
-        buttonSave.setOnClickListener(new View.OnClickListener() {
+        txtViewPublish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String status="published";
@@ -293,31 +295,36 @@ public class EditArticleActivity extends AppCompatActivity {
             return;
         }
         savePicture();
+
         timestamp=System.currentTimeMillis();
         String title=editTextArticleTitle.getText().toString();
         String Content=editText.getText().toString();
         String currentId=FirebaseAuth.getInstance().getCurrentUser().getUid();
-        myRef=FirebaseDatabase.getInstance().getReference().child("Article").child(Status);
+        myRef=FirebaseDatabase.getInstance().getReference().child("Articles").child(Status);
         HashMap<Object,Object> artcleMap=new HashMap<>();
         artcleMap.put("ArticleTitle",title);
         artcleMap.put("ArticleContent",Content);
-        artcleMap.put("timeStamp",timestamp);
-        artcleMap.put("imageUrl",imageurl);
+        artcleMap.put("timestamp",timestamp);
+        artcleMap.put("CoverPicUrl",imageurl);
+        progressBar.setVisibility(View.VISIBLE);
         myRef.setValue(artcleMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful())
                 {
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(EditArticleActivity.this, Status, Toast.LENGTH_SHORT).show();
 
                 }else {
-
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(EditArticleActivity.this, "Failed try again later", Toast.LENGTH_SHORT).show();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(EditArticleActivity.this, "Failed try again later", Toast.LENGTH_SHORT).show();
 
             }
         });

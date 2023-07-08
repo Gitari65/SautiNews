@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/bottom_Home"
+    android:icon="@drawable/icon_home"
+    android:title="Home"
+    />
+    <item android:id="@+id/bottom_Explore"
+        android:icon="@drawable/icon_explore"
+        android:title="Explore"
+        android:enabled="true"/>
+    <item android:id="@+id/bottom_Create"
+        android:icon="@drawable/add_article"
+        android:title="Create"
+        android:enabled="true"/>
+    <item android:id="@+id/bottom_Article"
+        android:icon="@drawable/icon_article"
+        android:title="My Articles"
+        />
+    <item android:id="@+id/bottom_Profile"
+        android:icon="@drawable/icon_user_profile"
+        android:title="Profile"
+       />
+</menu>

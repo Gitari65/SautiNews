@@ -4,6 +4,34 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 public class Article {
+    public String getCoverPicUrl() {
+        return CoverPicUrl;
+    }
+
+    public void setCoverPicUrl(String coverPicUrl) {
+        CoverPicUrl = coverPicUrl;
+    }
+
+    private String CoverPicUrl;
+    private String ArticleTitle;
+
+    public String getArticleTitle() {
+        return ArticleTitle;
+    }
+
+    public void setArticleTitle(String articleTitle) {
+        ArticleTitle = articleTitle;
+    }
+
+    public String getArticleContent() {
+        return ArticleContent;
+    }
+
+    public void setArticleContent(String articleContent) {
+        ArticleContent = articleContent;
+    }
+
+    private String ArticleContent;
     private String ArticleId;
 
     public String getArticleId() {
