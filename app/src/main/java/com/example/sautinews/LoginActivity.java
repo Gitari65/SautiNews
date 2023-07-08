@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,14 +32,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
-
+    ProgressBar progressBar;
     private static final int RC_SIGN_IN = 123;
     private Button loginButton;
     private Button backButton;
     private SignInButton googleSignInButton;
     private FirebaseAuth firebaseAuth;
     private TextView textView;
-
+FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         backButton = findViewById(R.id.button3);
         googleSignInButton = findViewById(R.id.google_sign_in_button);
         textView=findViewById(R.id.textView_signup);
+     progressBar = findViewById(R.id.progressBarLogin);
         createNotificationChannel();
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,10 +60,13 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Perform login action
+                loginUser();
             }
         });
 
@@ -82,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void signInWithGoogle() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken(getString(R.string.requestIdToken))
                 .requestEmail()
                 .build();
 
@@ -153,4 +160,36 @@ public class LoginActivity extends AppCompatActivity {
             // User is already signed in, proceed with your app's logic
         }
     }
+    private void loginUser() {
+        EditText emailEditText = findViewById(R.id.editTextLoginEmail);
+        EditText passwordEditText = findViewById(R.id.edtTxtlogin_password);
+
+
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+
+        // Show progress bar
+        progressBar.setVisibility(View.VISIBLE);
+
+        // Firebase login
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        // Hide progress bar
+                        progressBar.setVisibility(View.INVISIBLE);
+
+                        if (task.isSuccessful()) {
+                            // Login success
+                            Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                            Intent intent=new Intent(LoginActivity.this,NewsHomePage.class);
+                            startActivity(intent);
+                        } else {
+                            // Login failed
+                            Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
 }
