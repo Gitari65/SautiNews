@@ -28,6 +28,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -69,7 +70,7 @@ private ProgressBar progressBar;
     private Uri selectedImageUri;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
-
+String Status;
     public EditArticleActivity() {
     }
 
@@ -100,7 +101,10 @@ private ProgressBar progressBar;
         undoManager = new UndoManager(editText);
         buttonSave=findViewById(R.id.button_saveArticle);
        txtViewPublish=findViewById(R.id.button_publishArticle);
+       firebaseStorage=FirebaseStorage.getInstance();
+        storageReference= firebaseStorage.getReference("CoverPictures");
         // Set OnClickListener for the boldButton
+
         boldButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,16 +212,16 @@ private ProgressBar progressBar;
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String status="saved";
-                finishArticle(status);
+                 Status="saved";
+                savePicture();
             }
         });
         // Set OnClickListener for the publish textView
         txtViewPublish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String status="published";
-                finishArticle(status);
+                Status="published";
+                savePicture();
             }
         });
         imageViewArticlePicture.setOnClickListener(new View.OnClickListener() {
@@ -284,7 +288,7 @@ private ProgressBar progressBar;
         });
     }
     //Save and publish method for the Article
-    public void finishArticle(String Status)
+    public void finishArticle(String Status,String imageUrl)
     {
         if (TextUtils.isEmpty(editTextArticleTitle.getText().toString())) {
             Toast.makeText(this, "Please state the Title of your Article", Toast.LENGTH_SHORT).show();
@@ -294,7 +298,7 @@ private ProgressBar progressBar;
             Toast.makeText(this, "Please state the Content of your Article", Toast.LENGTH_SHORT).show();
             return;
         }
-        savePicture();
+
 
         timestamp=System.currentTimeMillis();
         String title=editTextArticleTitle.getText().toString();
@@ -306,14 +310,18 @@ private ProgressBar progressBar;
         artcleMap.put("ArticleContent",Content);
         artcleMap.put("timestamp",timestamp);
         artcleMap.put("CoverPicUrl",imageurl);
+        artcleMap.put("AuthorId",currentId);
         progressBar.setVisibility(View.VISIBLE);
-        myRef.setValue(artcleMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        myRef.push().setValue(artcleMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful())
                 {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(EditArticleActivity.this, Status, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditArticleActivity.this, "Good job☺", Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(EditArticleActivity.this,NewsHomePage.class);
+                    startActivity(intent);
 
                 }else {
                     progressBar.setVisibility(View.GONE);
@@ -509,7 +517,7 @@ private ProgressBar progressBar;
         // ...
 
         // Get the current timestamp
-
+        timestamp = System.currentTimeMillis();
 
         // Generate a unique filename for the image
         String imageFileName = "article_cover_" + UUID.randomUUID().toString() + ".jpg";
@@ -524,10 +532,16 @@ private ProgressBar progressBar;
                         // Image upload successful, get the download URL
                         imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                             // Create a new article object with the download URL of the image
+                            String imageUrl = uri.toString();
 
-                           imageurl=uri.toString();
+                            // Use the imageUrl as needed (e.g., store it in Firebase Database)
+                            // ...
 
-
+                            // Call the method to finish creating the article
+                            finishArticle(Status,imageUrl);
+                        }).addOnFailureListener(e -> {
+                            // Failed to get the download URL of the image
+                            // Handle the error appropriately
                         });
                     })
                     .addOnFailureListener(e -> {
@@ -536,7 +550,8 @@ private ProgressBar progressBar;
                     });
         } else {
             // If no image was selected, create an article object without the image URL
-            Toast.makeText(this, "image upload failed", Toast.LENGTH_SHORT).show();
+            finishArticle(Status,null);
         }
     }
+
 }

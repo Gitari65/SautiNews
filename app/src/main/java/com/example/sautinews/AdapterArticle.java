@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleViewHolder> {
@@ -35,10 +37,17 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleV
 
         // Bind the data to the views in the ViewHolder
         holder.textViewTitle.setText(article.getArticleTitle());
-        holder.textViewAuthorName.setText(article.getArticleTitle());
+        holder.textViewAuthorName.setText(article.getAuthor());
         String timestamp= String.valueOf(article.getTimestamp());
 
         holder.textViewTime.setText(getFormattedTimestamp(timestamp));
+       String imageUrl=article.getCoverPicUrl();
+
+        Picasso.get()
+                .load(imageUrl).placeholder(R.drawable.news_icon3)
+                .error(R.drawable.news_icon3)  // Set the error placeholder image resource
+                .into(holder.imageViewCoverPic);
+
 
 
         // Set the images using appropriate methods based on your implementation
