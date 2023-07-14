@@ -20,29 +20,10 @@ ProgressBar progressBar;
         progressBar.setVisibility(View.VISIBLE);
         handler=new Handler();
         handler.postDelayed(()-> {
+Intent intent=new Intent(MainActivity.this,WelcomeMainActivity.class);
+startActivity(intent);
+        },2000);
 
-        },3000);
-        // Check if it's the first time opening the app
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        boolean isFirstTime = sharedPreferences.getBoolean("isFirstTime", true);
-
-        if (isFirstTime) {
-            // First time opening the app, start the FirstTimeActivity
-            Intent intent= new Intent(MainActivity.this,WelcomeMainActivity.class);
-            startActivity(intent);
-
-            // Set the flag indicating that it's not the first time anymore
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("isFirstTime", false);
-            editor.apply();
-        } else {
-            // Not the first time, start another activity
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-        }
-
-        // Finish the launcher activity to prevent going back to it
-        finish();
 
 
     }
