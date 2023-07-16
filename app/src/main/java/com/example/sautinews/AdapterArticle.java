@@ -1,6 +1,7 @@
 package com.example.sautinews;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleV
 
     private List<Article> articles;
     private Context context;
+    private String articleTitle,articleTime,authorId,articleCoverPicUrl;
 
     public AdapterArticle(List<Article> articles, Context context) {
         this.articles = articles;
@@ -34,7 +36,7 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleV
     @Override
     public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
         Article article = articles.get(position);
-
+        articleTitle=article.getArticleTitle();
         // Bind the data to the views in the ViewHolder
         holder.textViewTitle.setText(article.getArticleTitle());
         holder.textViewAuthorName.setText(article.getAuthor());
@@ -83,7 +85,7 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleV
             return minutes + " mins ago";
         } else {
             // Less than a minute ago or just a few seconds ago
-            return "last few seconds ago";
+            return seconds+" seconds ago";
         }
     }
     @Override
@@ -106,7 +108,15 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleV
             textViewAuthorName = itemView.findViewById(R.id.textViewAuthorName);
             textViewTime = itemView.findViewById(R.id.textViewTime);
 
+
             // Set any click listeners or other functionality here
+            imageViewCoverPic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(context.getApplicationContext(),ReadNewsActivity.class);
+
+                }
+            });
         }
     }
 }

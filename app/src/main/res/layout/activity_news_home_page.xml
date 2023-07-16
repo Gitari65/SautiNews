@@ -13,40 +13,34 @@
         android:id="@+id/layout_linear"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:textSize="20sp"
+        <ImageView
+            android:id="@+id/imageViewLogo"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
 
-            android:text="Sauti" />
+            app:srcCompat="@drawable/logo_spark" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:text="360"
-            android:textColor="@color/orange"
-            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/imageViewSearch"
-            android:layout_width="36dp"
-            android:layout_height="35dp"
+            android:layout_width="51dp"
+            android:layout_height="39dp"
             android:layout_marginLeft="50dp"
             app:srcCompat="@drawable/icon_search2" />
         <ImageView
-            android:id="@+id/imageViewNotification"
+            android:id="@+id/imageViewNotificationsHome"
             android:layout_width="26dp"
             android:layout_marginLeft="70dp"
             android:layout_height="26dp"
             app:srcCompat="@drawable/bell" />
         <ImageView
-            android:id="@+id/imageViewBookmarks"
+            android:id="@+id/imageViewBookmarksHome"
             android:layout_width="26dp"
             android:layout_marginLeft="15dp"
             android:layout_height="26dp"
             app:srcCompat="@drawable/bookmark" />
+
+
     </LinearLayout>
 
     <FrameLayout
