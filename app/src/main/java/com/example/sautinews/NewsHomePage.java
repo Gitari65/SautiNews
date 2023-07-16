@@ -4,29 +4,46 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class NewsHomePage extends AppCompatActivity {
-    private BottomNavigationView bottomNavigationView;
+    public ImageView imageViewNotifications,imageViewBookmarks;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_home_page);
 
-
+        imageViewBookmarks=findViewById(R.id.imageViewBookmarksHome);
+            imageViewNotifications=findViewById(R.id.imageViewNotificationsHome);
+            imageViewNotifications.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    shakeAnimation(imageViewNotifications);
+                }
+            });
+        imageViewBookmarks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shakeAnimation(imageViewBookmarks);
+            }
+        });
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentContainer, new HomeFragment())
                     .commit();
 
 
-
-
-            bottomNavigationView = findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
             // Set the listener for item selection
             bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -64,5 +81,9 @@ public class NewsHomePage extends AppCompatActivity {
                     return true;
                 }
             });
+        }
+        public  void shakeAnimation(ImageView imageView){
+            Animation animation= AnimationUtils.loadAnimation(NewsHomePage.this,R.anim.shake_animation);
+            imageView.startAnimation(animation);
         }
     }
