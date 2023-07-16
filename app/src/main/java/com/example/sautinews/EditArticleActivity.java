@@ -33,8 +33,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -58,13 +61,14 @@ private ProgressBar progressBar;
     private ImageButton undoButton;
     private ImageButton redoButton;
     private ImageButton spellCheckButton;
-    private DatabaseReference myRef;
+    private DatabaseReference myRef,myRef1;
     private  UndoManager undoManager;
     private TextView textViewdesc;
     private EditText editTextArticleTitle;
     private ImageView imageViewArticlePicture;
     private long timestamp;
     String imageurl;
+    String authorName;
   private Button buttonSave;
     private TextView txtViewPublish;
     private Uri selectedImageUri;
@@ -304,40 +308,69 @@ String Status;
         String title=editTextArticleTitle.getText().toString();
         String Content=editText.getText().toString();
         String currentId=FirebaseAuth.getInstance().getCurrentUser().getUid();
-        myRef=FirebaseDatabase.getInstance().getReference().child("Articles").child(Status);
-        HashMap<Object,Object> artcleMap=new HashMap<>();
-        artcleMap.put("ArticleTitle",title);
-        artcleMap.put("ArticleContent",Content);
-        artcleMap.put("timestamp",timestamp);
-        artcleMap.put("CoverPicUrl",imageurl);
-        artcleMap.put("AuthorId",currentId);
-        progressBar.setVisibility(View.VISIBLE);
-        myRef.push().setValue(artcleMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful())
-                {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(EditArticleActivity.this, Status, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(EditArticleActivity.this, "Good job☺", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(EditArticleActivity.this,NewsHomePage.class);
-                    startActivity(intent);
 
-                }else {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(EditArticleActivity.this, "Failed try again later", Toast.LENGTH_SHORT).show();
+
+        myRef1=FirebaseDatabase.getInstance().getReference().child("users").child(currentId);
+        myRef1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists())
+                {
+                     authorName=snapshot.child("name").getValue(String.class);
+                    timestamp=System.currentTimeMillis();
+                    String title=editTextArticleTitle.getText().toString();
+                    String Content=editText.getText().toString();
+                    String currentId=FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                    HashMap<Object,Object> artcleMap=new HashMap<>();
+                    artcleMap.put("ArticleTitle",title);
+                    artcleMap.put("ArticleContent",Content);
+                    artcleMap.put("timestamp",timestamp);
+                    artcleMap.put("CoverPicUrl",imageUrl);
+                    artcleMap.put("AuthorId",currentId);
+                    artcleMap.put("AuthorFullName",authorName);
+                    progressBar.setVisibility(View.VISIBLE);
+                    myRef=FirebaseDatabase.getInstance().getReference().child("Articles").child(Status);
+                    myRef.push().setValue(artcleMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful())
+                            {
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(EditArticleActivity.this, Status, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EditArticleActivity.this, "Good job☺", Toast.LENGTH_SHORT).show();
+                                Intent intent=new Intent(EditArticleActivity.this,NewsHomePage.class);
+                                startActivity(intent);
+
+                            }else {
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(EditArticleActivity.this, "Failed try again later", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(EditArticleActivity.this, "Failed try again later", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+
+                }
+                else {
+                    Toast.makeText(EditArticleActivity.this, "Finish your profile for Better content creation", Toast.LENGTH_SHORT).show();
+
                 }
             }
-        }).addOnFailureListener(new OnFailureListener() {
+
             @Override
-            public void onFailure(@NonNull Exception e) {
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(EditArticleActivity.this, "Failed try again later", Toast.LENGTH_SHORT).show();
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
 
     }
+
 
     private void toggleUnderline() {
         // Toggle the selected text between underline and normal
