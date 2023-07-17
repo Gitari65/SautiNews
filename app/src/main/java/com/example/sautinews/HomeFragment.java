@@ -88,7 +88,7 @@ getArticledata();
         articles = new ArrayList<>();
 
         // Get a reference to the "articles" node in the Firebase Realtime Database
-        articlesRef = FirebaseDatabase.getInstance().getReference("Articles");
+        articlesRef = FirebaseDatabase.getInstance().getReference("").child("Articles").child("published");
 
         // Set up a ValueEventListener to listen for changes in the data
         articlesRef.addValueEventListener(new ValueEventListener() {
@@ -106,7 +106,11 @@ getArticledata();
 
                 // Create an instance of the ArticleAdapter and pass the list of articles
                 articleAdapter = new AdapterArticle(articles, getActivity());
-
+                LinearLayoutManager HorizontalLayout = new LinearLayoutManager(
+                        getContext(),
+                        LinearLayoutManager.HORIZONTAL,
+                        false);
+                recyclerView.setLayoutManager(HorizontalLayout);
                 // Set the adapter on the RecyclerView
                 recyclerView.setAdapter(articleAdapter);
             }
