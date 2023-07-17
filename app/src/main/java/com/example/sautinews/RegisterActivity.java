@@ -105,7 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                         if (task.isSuccessful()) {
                             // Registration success, proceed to the next activity
-                            Intent intent = new Intent(RegisterActivity.this,NewsHomePage.class);
+                            Intent intent = new Intent(RegisterActivity.this,ProfileCompletionActivity.class);
                             startActivity(intent);
                             finish();
                             FirebaseDatabase database= FirebaseDatabase.getInstance();
@@ -171,7 +171,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Google sign-in success, proceed to the next activity
-                            Intent intent = new Intent(RegisterActivity.this, NewsHomePage.class);
+                            Intent intent = new Intent(RegisterActivity.this, ProfileCompletionActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
