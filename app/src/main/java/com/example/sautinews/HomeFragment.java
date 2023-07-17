@@ -15,10 +15,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -89,9 +91,10 @@ getArticledata();
 
         // Get a reference to the "articles" node in the Firebase Realtime Database
         articlesRef = FirebaseDatabase.getInstance().getReference("").child("Articles").child("published");
+        Query myQuery= articlesRef.orderByChild("timestamp");
 
         // Set up a ValueEventListener to listen for changes in the data
-        articlesRef.addValueEventListener(new ValueEventListener() {
+        myQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // Clear the existing list of articles
