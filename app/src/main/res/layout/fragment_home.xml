@@ -1,99 +1,92 @@
-<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
+        android:layout_height="match_parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:drawableEnd="@drawable/icon_right_direction"
-            android:fontFamily="@font/roboto_medium"
-            android:textSize="24sp"
-            android:text="Suggestions" />
-        <HorizontalScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:scrollbars="horizontal"
-                    android:id="@+id/SuggestionrecyclerView"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-        </HorizontalScrollView>
-            
-        
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:drawableEnd="@drawable/icon_right_direction"
-            android:fontFamily="@font/roboto_medium"
-            android:textSize="24sp"
-            android:text="Recent Articles" />
-        <HorizontalScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:drawableEnd="@drawable/icon_right_direction"
+                android:fontFamily="@font/roboto_medium"
+                android:textSize="24sp"
+                android:text="Suggestions" />
+
+            <HorizontalScrollView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/ArticlerecyclerView"
-                    android:layout_marginTop="10dp"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:orientation="horizontal"
-                    android:scrollbars="horizontal"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </HorizontalScrollView>
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-       
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/SuggestionrecyclerView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </HorizontalScrollView>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:drawableEnd="@drawable/icon_right_direction"
-            android:fontFamily="@font/roboto_medium"
-            android:textSize="24sp"
-            android:text="My Articles" />
-        <HorizontalScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <LinearLayout
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableEnd="@drawable/icon_right_direction"
+                android:fontFamily="@font/roboto_medium"
+                android:textSize="24sp"
+                android:text="Recent Articles" />
+
+            <HorizontalScrollView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <androidx.recyclerview.widget.RecyclerView
+                android:layout_height="wrap_content">
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:scrollbars="horizontal"
-                    android:id="@+id/MyArticlerecyclerView"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-        </HorizontalScrollView>
-        
-    </LinearLayout>
-</ScrollView>
-    <!-- TODO: Update blank fragment layout -->
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/RecentArticleRecyclerView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </HorizontalScrollView>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableEnd="@drawable/icon_right_direction"
+                android:fontFamily="@font/roboto_medium"
+                android:textSize="24sp"
+                android:text="My Articles" />
 
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/MyArticlerecyclerView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

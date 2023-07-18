@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -71,7 +72,7 @@ public class HomeFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView,recyclerViewRecent,recyclerViewSuggestion;
     private AdapterArticle articleAdapter;
     private List<Article> articles;
     private DatabaseReference articlesRef;
@@ -82,12 +83,61 @@ public class HomeFragment extends Fragment {
        View view= inflater.inflate(R.layout.fragment_home, container, false);
 
         recyclerView = view.findViewById(R.id.MyArticlerecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        getArticleData();
+        recyclerViewRecent=view.findViewById(R.id.RecentArticleRecyclerView);
+        recyclerViewSuggestion = view.findViewById(R.id.SuggestionrecyclerView);
+        // Set up LinearLayoutManager with horizontal orientation
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+
+        getMyArticleData();
 
        return view;
     }
-    public void getArticleData() {
+    public void getMyArticleData() {
+        // Initialize the list to hold Article objects
+        articles = new ArrayList<>();
+
+        // Get the current user's ID
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString(); // Replace this with your method to retrieve the current user's ID
+
+        // Get a reference to the "articles" node in the Firebase Realtime Database
+        articlesRef = FirebaseDatabase.getInstance().getReference("Articles").child("published");
+
+        // Query the articlesRef to filter by authorId and order the data by the "timestamp" child node in descending order
+        Query query = articlesRef.orderByChild("authorId").equalTo(currentUserId).orderByChild("timestamp");
+
+        // Set up a ValueEventListener to listen for changes in the data
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Clear the existing list of articles
+                articles.clear();
+
+                // Iterate through the dataSnapshot to retrieve Article objects
+                for (DataSnapshot articleSnapshot : snapshot.getChildren()) {
+                    // Get the article data and create an Article object
+                    Article article = articleSnapshot.getValue(Article.class);
+                    articles.add(article);
+                }
+
+                // Reverse the list to display the items from most recent to oldest
+                Collections.reverse(articles);
+
+                // Create an instance of the ArticleAdapter and pass the list of articles
+                articleAdapter = new AdapterArticle(articles, getActivity());
+
+                // Set the adapter on the RecyclerView
+                recyclerView.setAdapter(articleAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle the error
+            }
+        });
+    }
+
+    public void getRecentArticleData() {
         // Initialize the list to hold Article objects
         articles = new ArrayList<>();
 
@@ -95,7 +145,47 @@ public class HomeFragment extends Fragment {
         articlesRef = FirebaseDatabase.getInstance().getReference("Articles").child("published");
 
         // Query the articlesRef to order the data by the "timestamp" child node in descending order
-        Query query = articlesRef.orderByChild("timestamp").limitToLast(10);
+        Query query = articlesRef.orderByChild("timestamp");
+
+        // Set up a ValueEventListener to listen for changes in the data
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Clear the existing list of articles
+                articles.clear();
+
+                // Iterate through the dataSnapshot to retrieve Article objects
+                for (DataSnapshot articleSnapshot : snapshot.getChildren()) {
+                    // Get the article data and create an Article object
+                    Article article = articleSnapshot.getValue(Article.class);
+                    articles.add(article);
+                }
+
+                // Reverse the list to display the items from most recent to oldest
+                Collections.reverse(articles);
+
+                // Create an instance of the ArticleAdapter and pass the list of articles
+                articleAdapter = new AdapterArticle(articles, getActivity());
+
+                // Set the adapter on the RecyclerView
+                recyclerViewRecent.setAdapter(articleAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void getSuggestionArticleData() {
+        // Initialize the list to hold Article objects
+        articles = new ArrayList<>();
+
+        // Get a reference to the "articles" node in the Firebase Realtime Database
+        articlesRef = FirebaseDatabase.getInstance().getReference("Suggestions").child("published");
+
+        // Query the articlesRef to order the data by the "timestamp" child node in descending order
+        Query query = articlesRef.orderByChild("timestamp");
 
         // Set up a ValueEventListener to listen for changes in the data
         query.addValueEventListener(new ValueEventListener() {
@@ -127,6 +217,5 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
 
 }
