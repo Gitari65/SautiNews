@@ -46,6 +46,11 @@ FirebaseAuth mAuth;
         setContentView(R.layout.activity_login);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser()!=null)
+        {
+            Intent intent=new Intent(LoginActivity.this,NewsHomePage.class);
+            startActivity(intent);
+        }
 
         loginButton = findViewById(R.id.button_login);
         backButton = findViewById(R.id.button3);

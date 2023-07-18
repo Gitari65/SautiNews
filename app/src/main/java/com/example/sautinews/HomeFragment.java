@@ -3,6 +3,7 @@ package com.example.sautinews;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,6 +21,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 
@@ -80,21 +83,22 @@ public class HomeFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.MyArticlerecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-getArticledata();
+        getArticleData();
 
        return view;
     }
-    public void getArticledata(){
-
+    public void getArticleData() {
         // Initialize the list to hold Article objects
         articles = new ArrayList<>();
 
         // Get a reference to the "articles" node in the Firebase Realtime Database
-        articlesRef = FirebaseDatabase.getInstance().getReference("").child("Articles").child("published");
-        Query myQuery= articlesRef.orderByChild("timestamp");
+        articlesRef = FirebaseDatabase.getInstance().getReference("Articles").child("published");
+
+        // Query the articlesRef to order the data by the "timestamp" child node in descending order
+        Query query = articlesRef.orderByChild("timestamp").limitToLast(10);
 
         // Set up a ValueEventListener to listen for changes in the data
-        myQuery.addValueEventListener(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // Clear the existing list of articles
@@ -107,13 +111,12 @@ getArticledata();
                     articles.add(article);
                 }
 
+                // Reverse the list to display the items from most recent to oldest
+                Collections.reverse(articles);
+
                 // Create an instance of the ArticleAdapter and pass the list of articles
                 articleAdapter = new AdapterArticle(articles, getActivity());
-                LinearLayoutManager HorizontalLayout = new LinearLayoutManager(
-                        getContext(),
-                        LinearLayoutManager.HORIZONTAL,
-                        false);
-                recyclerView.setLayoutManager(HorizontalLayout);
+
                 // Set the adapter on the RecyclerView
                 recyclerView.setAdapter(articleAdapter);
             }
@@ -122,8 +125,8 @@ getArticledata();
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        } )
-
-        ;
+        });
     }
+
+
 }
