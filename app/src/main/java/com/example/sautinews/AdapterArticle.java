@@ -19,7 +19,8 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleV
 
     private List<Article> articles;
     private Context context;
-    private String articleTitle,articleTime,authorId,articleCoverPicUrl;
+    private String articleTitle,articleTime,authorId,CoverPicUrl,AuthorName,time,articleId;
+
 
     public AdapterArticle(List<Article> articles, Context context) {
         this.articles = articles;
@@ -39,7 +40,7 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleV
         articleTitle=article.getArticleTitle();
         // Bind the data to the views in the ViewHolder
         holder.textViewTitle.setText(article.getArticleTitle());
-        holder.textViewAuthorName.setText(article.getAuthor());
+        holder.textViewAuthorName.setText(article.getAuthorFullName());
         String timestamp= String.valueOf(article.getTimestamp());
 
         holder.textViewTime.setText(getFormattedTimestamp(timestamp));
@@ -50,6 +51,9 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleV
                 .error(R.drawable.news_icon3)  // Set the error placeholder image resource
                 .into(holder.imageViewCoverPic);
 
+AuthorName=article.getAuthorFullName();
+time=getFormattedTimestamp(timestamp);
+CoverPicUrl=article.getCoverPicUrl();
 
 
         // Set the images using appropriate methods based on your implementation

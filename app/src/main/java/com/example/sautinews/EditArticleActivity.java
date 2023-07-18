@@ -37,6 +37,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -310,25 +311,28 @@ String Status;
         String currentId=FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
-        myRef1=FirebaseDatabase.getInstance().getReference().child("users").child(currentId);
-        myRef1.addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef1=FirebaseDatabase.getInstance().getReference().child("users");
+        Query usernameQuery = myRef1.orderByChild("AuthorId").equalTo(currentId);
+        usernameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists())
                 {
-                     authorName=snapshot.child("name").getValue(String.class);
+                     authorName=snapshot.child("FullName").getValue(String.class);
+                     String userName=snapshot.child("UserName").getValue(String.class);
                     timestamp=System.currentTimeMillis();
                     String title=editTextArticleTitle.getText().toString();
                     String Content=editText.getText().toString();
                     String currentId=FirebaseAuth.getInstance().getCurrentUser().getUid();
 
                     HashMap<Object,Object> artcleMap=new HashMap<>();
-                    artcleMap.put("ArticleTitle",title);
-                    artcleMap.put("ArticleContent",Content);
+                    artcleMap.put("articleTitle",title);
+                    artcleMap.put("articleContent",Content);
                     artcleMap.put("timestamp",timestamp);
-                    artcleMap.put("CoverPicUrl",imageUrl);
-                    artcleMap.put("AuthorId",currentId);
-                    artcleMap.put("AuthorFullName",authorName);
+                    artcleMap.put("coverPicUrl",imageUrl);
+                    artcleMap.put("authorId",currentId);
+                    artcleMap.put("authorFullName",authorName);
+//                    artcleMap.put("UserName",userName);
                     progressBar.setVisibility(View.VISIBLE);
                     myRef=FirebaseDatabase.getInstance().getReference().child("Articles").child(Status);
                     myRef.push().setValue(artcleMap).addOnCompleteListener(new OnCompleteListener<Void>() {

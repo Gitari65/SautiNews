@@ -2,81 +2,82 @@ package com.example.sautinews;
 
 import java.sql.Time;
 import java.sql.Timestamp;
-
 public class Article {
-    public String getCoverPicUrl() {
-        return CoverPicUrl;
+    private String articleId;
+    private String articleTitle;
+    private String articleContent;
+    private String coverPicUrl;
+    private String authorId;
+    private String authorFullName;
+    private Long timestamp;
+    private int views;
+    private int likes;
+    private String comments;
+
+    public Article() {
+        // Default constructor required for Firebase
     }
 
-    public void setCoverPicUrl(String coverPicUrl) {
-        CoverPicUrl = coverPicUrl;
+    public Article(String articleId, String articleTitle, String articleContent, String coverPicUrl, String authorId, String authorFullName, Long timestamp, int views, int likes, String comments) {
+        this.articleId = articleId;
+        this.articleTitle = articleTitle;
+        this.articleContent = articleContent;
+        this.coverPicUrl = coverPicUrl;
+        this.authorId = authorId;
+        this.authorFullName = authorFullName;
+        this.timestamp = timestamp;
+        this.views = views;
+        this.likes = likes;
+        this.comments = comments;
     }
-
-    private String CoverPicUrl;
-    private String ArticleTitle;
-
-    public String getArticleTitle() {
-        return ArticleTitle;
-    }
-
-    public void setArticleTitle(String articleTitle) {
-        ArticleTitle = articleTitle;
-    }
-
-    public String getArticleContent() {
-        return ArticleContent;
-    }
-
-    public void setArticleContent(String articleContent) {
-        ArticleContent = articleContent;
-    }
-
-    private String ArticleContent;
-    private String ArticleId;
 
     public String getArticleId() {
-        return ArticleId;
+        return articleId;
     }
 
     public void setArticleId(String articleId) {
-        ArticleId = articleId;
+        this.articleId = articleId;
     }
 
-    public String getAuthor() {
-        return Author;
+    public String getArticleTitle() {
+        return articleTitle;
     }
 
-    public void setAuthor(String author) {
-        Author = author;
+    public void setArticleTitle(String articleTitle) {
+        this.articleTitle = articleTitle;
     }
 
-
-
-    public int getViews() {
-        return Views;
+    public String getArticleContent() {
+        return articleContent;
     }
 
-    public void setViews(int views) {
-        Views = views;
+    public void setArticleContent(String articleContent) {
+        this.articleContent = articleContent;
     }
 
-    public int getLikes() {
-        return Likes;
+    public String getCoverPicUrl() {
+        return coverPicUrl;
     }
 
-    public void setLikes(int likes) {
-        Likes = likes;
+    public void setCoverPicUrl(String coverPicUrl) {
+        this.coverPicUrl = coverPicUrl;
     }
 
-    public String getComments() {
-        return Comments;
+    public String getAuthorId() {
+        return authorId;
     }
 
-    public void setComments(String comments) {
-        Comments = comments;
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
     }
 
-    private String Author;
+    public String getAuthorFullName() {
+        return authorFullName;
+    }
+
+    public void setAuthorFullName(String authorFullName) {
+        this.authorFullName = authorFullName;
+    }
 
     public Long getTimestamp() {
         return timestamp;
@@ -86,10 +87,27 @@ public class Article {
         this.timestamp = timestamp;
     }
 
-    private Long timestamp;
-    private int Views;
-    private int Likes;
-    private String Comments;
+    public int getViews() {
+        return views;
+    }
 
+    public void setViews(int views) {
+        this.views = views;
+    }
 
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
 }
