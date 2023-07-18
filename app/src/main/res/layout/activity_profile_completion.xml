@@ -44,11 +44,9 @@
         <ImageView
             android:id="@+id/img_addphoto"
             android:layout_width="96dp"
-            android:layout_height="92dp"
-
             android:layout_gravity="center"
-            android:background="@drawable/icon_userprofile2" />
-
+            android:layout_height="92dp"
+            app:srcCompat="@drawable/icon_userprofile2" />
         <EditText
             android:id="@+id/edtTxtUserName"
             android:layout_width="209dp"
@@ -56,14 +54,14 @@
             android:layout_marginTop="20dp"
             android:layout_gravity="center"
             android:inputType="textPersonName"
-            android:text="User Name" />
+            android:hint="User Name" />
         <EditText
             android:id="@+id/edtTxtFullName"
             android:layout_width="209dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:inputType="textPersonName"
-            android:text="Full Name" />
+            android:hint="Full Name" />
 
         <LinearLayout
             android:layout_width="199dp"
@@ -89,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:inputType="number"
-                android:text="Phone Number" />
+                android:hint="Phone Number" />
         </LinearLayout>
 
 
@@ -122,7 +120,7 @@
                 android:layout_height="48dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="5dp"
-                android:text="Date of birth"
+                android:hint="Date of birth"
                 android:textSize="17sp" />
 
             <ImageView
@@ -134,12 +132,14 @@
 
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/buttonSaveProfile"
             android:layout_width="302dp"
             android:layout_height="54dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:text="save" />
+
+
 
     </LinearLayout>
 
