@@ -9,6 +9,16 @@ public class Article {
     private String coverPicUrl;
     private String authorId;
     private String authorFullName;
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    private String fullName;
     private Long timestamp;
     private int views;
     private int likes;

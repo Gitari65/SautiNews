@@ -1,7 +1,10 @@
 package com.example.sautinews;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +22,7 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleV
 
     private List<Article> articles;
     private Context context;
-    private String articleTitle,articleTime,authorId,CoverPicUrl,AuthorName,time,articleId;
+    private String articleTitle,articleContent,articleTime,AuthorId,CoverPicUrl,AuthorName,time,articleId;
 
 
     public AdapterArticle(List<Article> articles, Context context) {
@@ -51,17 +54,11 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleV
                 .error(R.drawable.news_icon3)  // Set the error placeholder image resource
                 .into(holder.imageViewCoverPic);
 
-AuthorName=article.getAuthorFullName();
-time=getFormattedTimestamp(timestamp);
-CoverPicUrl=article.getCoverPicUrl();
-
-
-        // Set the images using appropriate methods based on your implementation
-        // holder.imageViewCoverPic.setImageURI(article.getCoverPicUri());
-        // holder.imageViewBookmark.setImageResource(article.isBookmarked() ? R.drawable.bookmark_selected : R.drawable.bookmark_unselected);
-        // holder.imageViewAuthorPic.setImageResource(article.getAuthorPicResId());
+articleId=article.getArticleId();
+        Log.i(TAG, "onClick: article"+articleId);
     }
     private String getFormattedTimestamp(String timestamp) {
+//        String timestamp= String.valueOf(article.getTimestamp());
         // Get the current time in milliseconds
         long currentTime = System.currentTimeMillis();
 
@@ -78,10 +75,14 @@ CoverPicUrl=article.getCoverPicUrl();
         long days = hours / 24;
 
         // Format the timestamp text based on the time difference
-        if (days > 0) {
+        if (days ==1) {
+            // More than a day ago
+            return days + " day ago";
+        }
+        if (days > 1) {
             // More than a day ago
             return days + " days ago";
-        } else if (hours > 0) {
+        }else if (hours > 0) {
             // More than an hour ago
             return hours + " hrs ago";
         } else if (minutes > 0) {
@@ -117,10 +118,18 @@ CoverPicUrl=article.getCoverPicUrl();
             imageViewCoverPic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent=new Intent(context.getApplicationContext(),ReadNewsActivity.class);
-
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Article article = articles.get(position);
+                        String articleId = article.getArticleId();
+                        Intent intent = new Intent(context.getApplicationContext(), ReadNewsActivity.class);
+                        intent.putExtra("ArticleId", articleId);
+                        Log.i(TAG, "onClick: articleid" + articleId);
+                        context.startActivity(intent);
+                    }
                 }
             });
+
         }
     }
 }
