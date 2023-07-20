@@ -1,6 +1,7 @@
 package com.example.sautinews;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.internal.Storage;
@@ -75,6 +77,8 @@ private ProgressBar progressBar;
     private Uri selectedImageUri;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
+    String category;
+    private String[] categoryString={"sports","politics","Technology","Art","Nature","Entertainment","Fashion"};
 String Status;
     public EditArticleActivity() {
     }
@@ -226,7 +230,7 @@ String Status;
             @Override
             public void onClick(View view) {
                 Status="published";
-                savePicture();
+               showCategoryDialog();
             }
         });
         imageViewArticlePicture.setOnClickListener(new View.OnClickListener() {
@@ -312,19 +316,22 @@ String Status;
 
 
         myRef1=FirebaseDatabase.getInstance().getReference().child("users");
-        Query usernameQuery = myRef1.orderByChild("AuthorId").equalTo(currentId);
+        Query usernameQuery = myRef1.orderByChild("authorId").equalTo(currentId);
         usernameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists())
                 {
-                     authorName=snapshot.child("FullName").getValue(String.class);
+                    progressBar.setVisibility(View.VISIBLE);
+                     authorName=snapshot.child("fullName").getValue(String.class);
                      String userName=snapshot.child("UserName").getValue(String.class);
                     timestamp=System.currentTimeMillis();
                     String title=editTextArticleTitle.getText().toString();
                     String Content=editText.getText().toString();
                     String currentId=FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    myRef=FirebaseDatabase.getInstance().getReference().child("Articles").child(Status).push();
 
+                    String articleId = myRef.getKey();
                     HashMap<Object,Object> artcleMap=new HashMap<>();
                     artcleMap.put("articleTitle",title);
                     artcleMap.put("articleContent",Content);
@@ -332,14 +339,15 @@ String Status;
                     artcleMap.put("coverPicUrl",imageUrl);
                     artcleMap.put("authorId",currentId);
                     artcleMap.put("authorFullName",authorName);
-//                    artcleMap.put("UserName",userName);
+                    artcleMap.put("articleId",articleId);
+                    artcleMap.put("category",category);
                     progressBar.setVisibility(View.VISIBLE);
-                    myRef=FirebaseDatabase.getInstance().getReference().child("Articles").child(Status);
-                    myRef.push().setValue(artcleMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    myRef.setValue(artcleMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful())
                             {
+
                                 progressBar.setVisibility(View.GONE);
                                 Toast.makeText(EditArticleActivity.this, Status, Toast.LENGTH_SHORT).show();
                                 Toast.makeText(EditArticleActivity.this, "Good job☺", Toast.LENGTH_SHORT).show();
@@ -363,13 +371,13 @@ String Status;
                 }
                 else {
                     Toast.makeText(EditArticleActivity.this, "Finish your profile for Better content creation", Toast.LENGTH_SHORT).show();
-
+                    progressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                progressBar.setVisibility(View.GONE);
             }
         });
 
@@ -590,5 +598,19 @@ String Status;
             finishArticle(Status,null);
         }
     }
+public void showCategoryDialog()
+{
+    AlertDialog.Builder builder=new AlertDialog.Builder(EditArticleActivity.this);
+    builder.setTitle("Choose your Article Category ");
+    builder.setItems(categoryString, new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+             category=categoryString[i];
+            savePicture();
+        }
+    });
+    AlertDialog dialog=builder.create();
+    dialog.show();
 
+}
 }
