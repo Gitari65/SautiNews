@@ -41,6 +41,7 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleV
     public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
         Article article = articles.get(position);
         articleTitle=article.getArticleTitle();
+
         // Bind the data to the views in the ViewHolder
         holder.textViewTitle.setText(article.getArticleTitle());
         holder.textViewAuthorName.setText(article.getAuthorFullName());

@@ -323,50 +323,56 @@ String Status;
                 if(snapshot.exists())
                 {
                     progressBar.setVisibility(View.VISIBLE);
-                     authorName=snapshot.child("fullName").getValue(String.class);
-                     String userName=snapshot.child("UserName").getValue(String.class);
-                    timestamp=System.currentTimeMillis();
-                    String title=editTextArticleTitle.getText().toString();
-                    String Content=editText.getText().toString();
-                    String currentId=FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    myRef=FirebaseDatabase.getInstance().getReference().child("Articles").child(Status).push();
+                    User user=snapshot.getValue(User.class);
+                    if(user!=null)
+                    {
+                        authorName=user.getFullName();
+                        timestamp=System.currentTimeMillis();
+                        String title=editTextArticleTitle.getText().toString();
+                        String Content=editText.getText().toString();
+                        String currentId=FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        myRef=FirebaseDatabase.getInstance().getReference().child("Articles").child(Status).push();
 
-                    String articleId = myRef.getKey();
-                    HashMap<Object,Object> artcleMap=new HashMap<>();
-                    artcleMap.put("articleTitle",title);
-                    artcleMap.put("articleContent",Content);
-                    artcleMap.put("timestamp",timestamp);
-                    artcleMap.put("coverPicUrl",imageUrl);
-                    artcleMap.put("authorId",currentId);
-                    artcleMap.put("authorFullName",authorName);
-                    artcleMap.put("articleId",articleId);
-                    artcleMap.put("category",category);
-                    progressBar.setVisibility(View.VISIBLE);
-                    myRef.setValue(artcleMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful())
-                            {
+                        String articleId = myRef.getKey();
+                        HashMap<Object,Object> artcleMap=new HashMap<>();
+                        artcleMap.put("articleTitle",title);
+                        artcleMap.put("articleContent",Content);
+                        artcleMap.put("timestamp",timestamp);
+                        artcleMap.put("coverPicUrl",imageUrl);
+                        artcleMap.put("authorId",currentId);
+                        artcleMap.put("authorFullName",authorName);
+                        artcleMap.put("articleId",articleId);
+                        artcleMap.put("category",category);
+                        progressBar.setVisibility(View.VISIBLE);
+                        myRef.setValue(artcleMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful())
+                                {
 
-                                progressBar.setVisibility(View.GONE);
-                                Toast.makeText(EditArticleActivity.this, Status, Toast.LENGTH_SHORT).show();
-                                Toast.makeText(EditArticleActivity.this, "Good job☺", Toast.LENGTH_SHORT).show();
-                                Intent intent=new Intent(EditArticleActivity.this,NewsHomePage.class);
-                                startActivity(intent);
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(EditArticleActivity.this, Status, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(EditArticleActivity.this, "Good job☺", Toast.LENGTH_SHORT).show();
+                                    Intent intent=new Intent(EditArticleActivity.this,NewsHomePage.class);
+                                    startActivity(intent);
 
-                            }else {
+                                }else {
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(EditArticleActivity.this, "Failed try again later", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
                                 progressBar.setVisibility(View.GONE);
                                 Toast.makeText(EditArticleActivity.this, "Failed try again later", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(EditArticleActivity.this, "Failed try again later", Toast.LENGTH_SHORT).show();
 
-                        }
-                    });
+                            }
+                        });
+                    }
+
+
+
 
                 }
                 else {

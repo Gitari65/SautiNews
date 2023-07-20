@@ -48,6 +48,15 @@ public class User {
     private  String articleId;
     private String userId;
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    private String fullName;
 
     // Empty constructor required for Firebase
     public User() {}
