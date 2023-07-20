@@ -15,17 +15,36 @@ import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class NewsHomePage extends AppCompatActivity {
-    public ImageView imageViewNotifications,imageViewBookmarks;
+    public ImageView imageViewNotifications,imageViewBookmarks,imageViewLogout;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_home_page);
+        imageViewLogout=findViewById(R.id.imageViewLogout);
 
         imageViewBookmarks=findViewById(R.id.imageViewBookmarksHome);
             imageViewNotifications=findViewById(R.id.imageViewNotificationsHome);
+        imageViewLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                // Navigate to the login screen or any other appropriate screen
+                // For example:
+                Intent intent = new Intent(NewsHomePage.this, LoginActivity.class);
+                startActivity(intent);
+                finish(); // Optional: Call finish() to close the current activity
+            }
+        });
             imageViewNotifications.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -41,7 +60,7 @@ public class NewsHomePage extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentContainer, new HomeFragment())
                     .commit();
-
+      
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -86,4 +105,5 @@ public class NewsHomePage extends AppCompatActivity {
             Animation animation= AnimationUtils.loadAnimation(NewsHomePage.this,R.anim.shake_animation);
             imageView.startAnimation(animation);
         }
+
     }

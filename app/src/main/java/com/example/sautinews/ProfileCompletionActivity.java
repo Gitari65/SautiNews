@@ -53,11 +53,11 @@ public class ProfileCompletionActivity extends AppCompatActivity {
     DatePickerDialog datePickerDialog;
     TextView dateTextView;
     Spinner spinner;
-    String gender,userName,fullName,imageUrl;
+    String gender,userName,fullName,imageUrl,dob;
     EditText editTextUsername,editTextFullname;
     DatabaseReference myRef1;
     ProgressBar progressBar;
-    ImageView imageView;
+  private   ImageView imageView;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_GALLERY = 2;
 
@@ -85,14 +85,9 @@ public class ProfileCompletionActivity extends AppCompatActivity {
         // Define a button or any other view that triggers the date picker dialog
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference("images");
-        imageView = findViewById(R.id.imageView);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finishSaving();
-            }
-        });
+
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +111,7 @@ public class ProfileCompletionActivity extends AppCompatActivity {
                                 // Set the selected date in a TextView or EditText
 
                                 dateTextView.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                                dob=dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
                             }
                         }, mYear, mMonth, mDay);
 
@@ -132,7 +128,12 @@ public class ProfileCompletionActivity extends AppCompatActivity {
         userName=editTextUsername.getText().toString().trim();
         fullName=editTextFullname.getText().toString();
 
-
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finishSaving();
+            }
+        });
     }
     public void finishSaving()
     {
@@ -166,14 +167,15 @@ public class ProfileCompletionActivity extends AppCompatActivity {
                     // Username doesn't exist
                     // Handle the case accordingly
                     HashMap<Object,Object> artcleMap=new HashMap<>();
-                    artcleMap.put("UserName",userName);
-                    artcleMap.put("FullName",fullName);
+                    artcleMap.put("userName",userName);
+                    artcleMap.put("fullName",fullName);
                     artcleMap.put("timestamp",timestamp);
-                    artcleMap.put("CoverPicUrl",imageUrl);
-                    artcleMap.put("AuthorId",currentId);
+                    artcleMap.put("profileUrl",imageUrl);
+                    artcleMap.put("authorId",currentId);
+                    artcleMap.put("dOB",dob);
                     progressBar.setVisibility(View.VISIBLE);
                     String userId=FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
-                    myRef1=FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+                    myRef1=FirebaseDatabase.getInstance().getReference().child("users");
                     myRef1.push().setValue(artcleMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
