@@ -25,6 +25,7 @@ import com.squareup.picasso.Picasso;
 public class ReadNewsActivity extends AppCompatActivity {
 private ImageView imageViewBookmark,imageViewSend,imageViewMenu,imageViewCoverPicture;
 TextView textViewName,textViewUserName,textViewTime,textViewContent,textViewTitle;
+String authorUserName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,13 +119,16 @@ TextView textViewName,textViewUserName,textViewTime,textViewContent,textViewTitl
                             String articleContent=article.getArticleContent();
                             String articleTitle=article.getArticleTitle();
                             String CoverPicurl=article.getCoverPicUrl();
+                            String authorId=article.getAuthorId();
 
+                            getUserInfo(authorId);
         Picasso.get().load(CoverPicurl).placeholder(R.drawable.news_icon3).
                 error(R.drawable.news_icon3).into(imageViewCoverPicture);
         textViewTime.setText(time);
         textViewName.setText(name);
         textViewContent.setText(articleContent);
         textViewTitle.setText(articleTitle);
+
                         }
                         }
 
@@ -176,6 +180,38 @@ TextView textViewName,textViewUserName,textViewTime,textViewContent,textViewTitl
             // Less than a minute ago or just a few seconds ago
             return seconds+" seconds ago";
         }
+    }
+    public void getUserInfo(String authorId){
+        // ...
+DatabaseReference myRef1;
+        myRef1 = FirebaseDatabase.getInstance().getReference().child("users");
+        myRef1.orderByChild("authorId").equalTo(authorId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                        // Get the user data from the matched user node
+                        User user = userSnapshot.getValue(User.class);
+                        if (user != null) {
+                            authorUserName = user.getUserName();
+                            textViewUserName.setText(authorUserName);
+                            // Rest of the code...
+                        }
+                        return; // Exit the loop after finding the user
+                    }
+                } else {
+                    // Handle the case where the user data doesn't exist or the currentId is not found
+                    // (Optional: Show a message or take appropriate action)
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle any database error that occurred during the query
+                // (Optional: Show a message or take appropriate action)
+            }
+        });
+
     }
 
 }          // Dark mode is not active
