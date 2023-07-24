@@ -14,8 +14,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleViewHolder> {
@@ -36,11 +44,13 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleV
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_layout, parent, false);
         return new ArticleViewHolder(view);
     }
-
+Article article;
+    boolean isBookmarked=false;
     @Override
     public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
-        Article article = articles.get(position);
+        article = articles.get(position);
         articleTitle=article.getArticleTitle();
+        articleId=article.getArticleId();
 
         // Bind the data to the views in the ViewHolder
         holder.textViewTitle.setText(article.getArticleTitle());
@@ -57,7 +67,92 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleV
 
 articleId=article.getArticleId();
         Log.i(TAG, "onClick: article"+articleId);
+        // Set the bookmark icon state based on the 'isArticleBookmarked' field of the Article class
+        holder.isArticleBookmarked = article.isBookmarked(); // Use the appropriate method to get the bookmark state
+        if (holder.isArticleBookmarked) {
+            holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark_filled);
+        } else {
+            holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark_unmarked);
+        }
+checkBookmarkStatus(articleId,holder.imageViewBookmark);
+        // Add an OnClickListener to the bookmark icon
+        holder.imageViewBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Toggle the bookmark state
+                holder.isArticleBookmarked = !holder.isArticleBookmarked;
+
+                // Update the bookmark icon
+                if (holder.isArticleBookmarked) {
+                    holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark_filled);
+                    updateBookmarkStatus(article.getArticleId(), true); // Update bookmark status in the database
+                } else {
+                    holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark_unmarked);
+                    updateBookmarkStatus(article.getArticleId(), false); // Update bookmark status in the database
+                }
+            }
+        });
     }
+
+    // ... other methods ...
+
+    // Method to update the bookmark status in the Firebase Database
+    private void updateBookmarkStatus(String articleId, boolean isBookmarked) {
+        // Get the authenticated user's ID
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+// Get a reference to the "articles" node in the Firebase Database
+        DatabaseReference articlesRef = FirebaseDatabase.getInstance().getReference().child("articlesInfo");
+
+// Get the specific article ID you want to update the bookmark status for
+        // Replace this with the actual article ID
+
+// Get a reference to the specific article node
+        DatabaseReference articleRef = articlesRef.child(articleId);
+// Assume you have a boolean variable indicating the bookmark status
+        boolean isArticleBookmarked = true; // Replace this with the actual bookmark status
+
+// Create a HashMap to update the bookmark status field in the database
+        HashMap<String, Object> updateData = new HashMap<>();
+        updateData.put("isBookmarked", isBookmarked);
+
+// Use the updateChildren() method to update the bookmark status field for the specific article
+        articleRef.updateChildren(updateData);
+    }
+    private  void checkBookmarkStatus(String articleId,ImageView imageViewBookmark)
+    {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("articlesInfo").child(userId);
+
+        Query usernameQuery = usersRef.orderByChild("authorId").equalTo(articleId);
+
+        usernameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    // Username already exists
+                    // Handle the case accordingly
+
+                    isBookmarked = (boolean) dataSnapshot.child("isBookmarked").getValue();
+
+                    if (isBookmarked) {
+                        imageViewBookmark.setImageResource(R.drawable.ic_bookmark_filled);
+                    } else {
+                        imageViewBookmark.setImageResource(R.drawable.ic_bookmark_unmarked);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // An error occurred while retrieving the data
+                // Handle the error accordingly
+            }
+        });
+
+    }
+
     private String getFormattedTimestamp(String timestamp) {
 //        String timestamp= String.valueOf(article.getTimestamp());
         // Get the current time in milliseconds
@@ -100,6 +195,7 @@ articleId=article.getArticleId();
     }
 
     public class ArticleViewHolder extends RecyclerView.ViewHolder {
+        public boolean isArticleBookmarked=false;
         ImageView imageViewCoverPic;
         ImageView imageViewBookmark;
         TextView textViewTitle;
@@ -113,6 +209,7 @@ articleId=article.getArticleId();
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
             textViewAuthorName = itemView.findViewById(R.id.textViewAuthorName);
             textViewTime = itemView.findViewById(R.id.textViewTime);
+
 
 
             // Set any click listeners or other functionality here

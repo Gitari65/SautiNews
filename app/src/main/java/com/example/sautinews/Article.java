@@ -10,6 +10,18 @@ public class Article {
     private String authorId;
     private String authorFullName;
 
+    public boolean isBookmarked() {
+        return isBookmarked;
+    }
+
+    public void setBookmarked(boolean bookmarked) {
+        isBookmarked = bookmarked;
+    }
+
+    private boolean isBookmarked;
+    private  boolean isLiked;
+    private  boolean isShared;
+
     public String getFullName() {
         return fullName;
     }
@@ -120,4 +132,6 @@ public class Article {
     public void setComments(String comments) {
         this.comments = comments;
     }
+
+
 }
