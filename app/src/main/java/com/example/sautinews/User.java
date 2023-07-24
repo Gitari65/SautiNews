@@ -3,6 +3,15 @@ package com.example.sautinews;
 public class User {
     private String name;
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    private String userName;
     public String getVerificationStatus() {
         return verificationStatus;
     }
