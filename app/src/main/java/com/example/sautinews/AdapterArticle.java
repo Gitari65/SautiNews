@@ -52,6 +52,7 @@ Article article;
         articleTitle=article.getArticleTitle();
         articleId=article.getArticleId();
 
+
         // Bind the data to the views in the ViewHolder
         holder.textViewTitle.setText(article.getArticleTitle());
         holder.textViewAuthorName.setText(article.getAuthorFullName());
@@ -74,22 +75,28 @@ articleId=article.getArticleId();
         } else {
             holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark_unmarked);
         }
-checkBookmarkStatus(articleId,holder.imageViewBookmark);
+        int adapterPosition = holder.getAdapterPosition();
+        checkBookmarkStatus(articleId,holder.imageViewBookmark,adapterPosition);
         // Add an OnClickListener to the bookmark icon
         holder.imageViewBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Toggle the bookmark state
-                holder.isArticleBookmarked = !holder.isArticleBookmarked;
+                int adapterPosition = holder.getAdapterPosition(); // Get the correct position
+                if (adapterPosition != RecyclerView.NO_POSITION) {
 
-                // Update the bookmark icon
-                if (holder.isArticleBookmarked) {
-                    holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark_filled);
-                    updateBookmarkStatus(article.getArticleId(), true); // Update bookmark status in the database
-                } else {
-                    holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark_unmarked);
-                    updateBookmarkStatus(article.getArticleId(), false); // Update bookmark status in the database
+                    holder.isArticleBookmarked = !holder.isArticleBookmarked;
+
+                    // Update the bookmark icon
+                    if (holder.isArticleBookmarked) {
+                        holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark_filled);
+                        updateBookmarkStatus(article.getArticleId(), true,adapterPosition); // Update bookmark status in the database
+                    } else {
+                        holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark_unmarked);
+                        updateBookmarkStatus(article.getArticleId(), false,adapterPosition); // Update bookmark status in the database
+                    }
                 }
+
             }
         });
     }
@@ -97,7 +104,7 @@ checkBookmarkStatus(articleId,holder.imageViewBookmark);
     // ... other methods ...
 
     // Method to update the bookmark status in the Firebase Database
-    private void updateBookmarkStatus(String articleId, boolean isBookmarked) {
+    private void updateBookmarkStatus(String articleId, boolean isBookmarked,int position) {
         // Get the authenticated user's ID
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -105,10 +112,11 @@ checkBookmarkStatus(articleId,holder.imageViewBookmark);
         DatabaseReference articlesRef = FirebaseDatabase.getInstance().getReference().child("articlesInfo");
 
 // Get the specific article ID you want to update the bookmark status for
+        Article article=articles.get(position);
         // Replace this with the actual article ID
 
 // Get a reference to the specific article node
-        DatabaseReference articleRef = articlesRef.child(articleId);
+        DatabaseReference articleRef = articlesRef.child(userId).child(articleId);
 // Assume you have a boolean variable indicating the bookmark status
         boolean isArticleBookmarked = true; // Replace this with the actual bookmark status
 
@@ -119,28 +127,33 @@ checkBookmarkStatus(articleId,holder.imageViewBookmark);
 // Use the updateChildren() method to update the bookmark status field for the specific article
         articleRef.updateChildren(updateData);
     }
-    private  void checkBookmarkStatus(String articleId,ImageView imageViewBookmark)
+    private  void checkBookmarkStatus(String articleId,ImageView imageViewBookmark,int position)
     {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("articlesInfo").child(userId);
 
         Query usernameQuery = usersRef.orderByChild("authorId").equalTo(articleId);
+        notifyDataSetChanged();
 
         usernameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
                     // Username already exists
-                    // Handle the case accordingly
+                    // Handle the case accordinglyint position =
+                    Article article1=articles.get(position);
+                    if (article1!=null)
+                    {
 
-                    isBookmarked = (boolean) dataSnapshot.child("isBookmarked").getValue();
-
-                    if (isBookmarked) {
-                        imageViewBookmark.setImageResource(R.drawable.ic_bookmark_filled);
-                    } else {
-                        imageViewBookmark.setImageResource(R.drawable.ic_bookmark_unmarked);
+                        isBookmarked=article1.isBookmarked();
+                        if (isBookmarked) {
+                            imageViewBookmark.setImageResource(R.drawable.ic_bookmark_filled);
+                        } else {
+                            imageViewBookmark.setImageResource(R.drawable.ic_bookmark_unmarked);
+                        }
                     }
+
                 }
             }
 
