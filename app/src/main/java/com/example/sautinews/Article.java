@@ -20,7 +20,34 @@ public class Article {
 
     private boolean isBookmarked;
     private  boolean isLiked;
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
+
+    public boolean isShared() {
+        return isShared;
+    }
+
+    public void setShared(boolean shared) {
+        isShared = shared;
+    }
+
     private  boolean isShared;
+
+    public boolean isFollowing() {
+        return isFollowing;
+    }
+
+    public void setFollowing(boolean following) {
+        isFollowing = following;
+    }
+
+    private  boolean isFollowing;
 
     public String getFullName() {
         return fullName;
