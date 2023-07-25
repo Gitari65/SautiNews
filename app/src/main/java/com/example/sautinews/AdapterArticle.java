@@ -106,7 +106,7 @@ articleId=article.getArticleId();
     // Method to update the bookmark status in the Firebase Database
     private void updateBookmarkStatus(String articleId, boolean isBookmarked,int position) {
         // Get the authenticated user's ID
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
 // Get a reference to the "articles" node in the Firebase Database
         DatabaseReference articlesRef = FirebaseDatabase.getInstance().getReference().child("articlesInfo");
@@ -118,7 +118,7 @@ articleId=article.getArticleId();
 // Get a reference to the specific article node
         DatabaseReference articleRef = articlesRef.child(userId).child(articleId);
 // Assume you have a boolean variable indicating the bookmark status
-        boolean isArticleBookmarked = true; // Replace this with the actual bookmark status
+//        boolean isArticleBookmarked = true; // Replace this with the actual bookmark status
 
 // Create a HashMap to update the bookmark status field in the database
         HashMap<String, Object> updateData = new HashMap<>();
@@ -131,12 +131,12 @@ articleId=article.getArticleId();
     {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
-        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("articlesInfo").child(userId);
 
-        Query usernameQuery = usersRef.orderByChild("authorId").equalTo(articleId);
-        notifyDataSetChanged();
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("articlesInfo").child(userId).child(articleId);
 
-        usernameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
@@ -153,8 +153,15 @@ articleId=article.getArticleId();
                             imageViewBookmark.setImageResource(R.drawable.ic_bookmark_unmarked);
                         }
                     }
+                    else {
+                        imageViewBookmark.setImageResource(R.drawable.ic_bookmark_unmarked);
+                    }
 
                 }
+                else {
+                    imageViewBookmark.setImageResource(R.drawable.ic_bookmark_unmarked);
+                }
+
             }
 
             @Override
@@ -165,6 +172,7 @@ articleId=article.getArticleId();
         });
 
     }
+
 
     private String getFormattedTimestamp(String timestamp) {
 //        String timestamp= String.valueOf(article.getTimestamp());
@@ -233,14 +241,40 @@ articleId=article.getArticleId();
                     if (position != RecyclerView.NO_POSITION) {
                         Article article = articles.get(position);
                         String articleId = article.getArticleId();
+                        String authorId=article.getAuthorId();
                         Intent intent = new Intent(context.getApplicationContext(), ReadNewsActivity.class);
                         intent.putExtra("ArticleId", articleId);
+                        intent.putExtra("AuthorId", authorId);
                         Log.i(TAG, "onClick: articleid" + articleId);
                         context.startActivity(intent);
+                        updateViewedStatus(articleId,position);
                     }
                 }
             });
 
+        }
+        private void updateViewedStatus(String articleId,int position) {
+            // Get the authenticated user's ID
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+
+// Get a reference to the "articles" node in the Firebase Database
+            DatabaseReference articlesRef = FirebaseDatabase.getInstance().getReference().child("articlesInfo");
+
+// Get the specific article ID you want to update the bookmark status for
+            Article article=articles.get(position);
+            // Replace this with the actual article ID
+
+// Get a reference to the specific article node
+            DatabaseReference articleRef = articlesRef.child(userId).child(articleId);
+// Assume you have a boolean variable indicating the bookmark status
+            boolean isViewed = true; // Replace this with the actual bookmark status
+
+// Create a HashMap to update the bookmark status field in the database
+            HashMap<String, Object> updateData = new HashMap<>();
+            updateData.put("isViewed", isViewed);
+
+// Use the updateChildren() method to update the bookmark status field for the specific article
+            articleRef.updateChildren(updateData);
         }
     }
 }

@@ -171,6 +171,8 @@ public class HomeFragment extends Fragment {
 
                 // Set the adapter on the RecyclerView
                 recyclerView.setAdapter(articleAdapter);
+                // Notify the adapter that the data has changed
+                articleAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -213,6 +215,8 @@ public class HomeFragment extends Fragment {
 
                 // Set the adapter on the RecyclerView
                 recyclerViewRecent.setAdapter(articleAdapterRecent);
+                // Notify the adapter that the data has changed
+                articleAdapterRecent.notifyDataSetChanged();
             }
 
             @Override
