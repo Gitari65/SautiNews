@@ -43,7 +43,7 @@ Contribute to the project and be part of the Sparkverse community.
 📱 Responsive and Accessible
 
 Sparkverse is designed to be responsive and accessible on all devices.
-Enjoy the seamless experience across desktop, tablet, and mobile.
+Enjoy the seamless experience android devices.
 ⚙️ Getting Started
 
 Clone the repository to your local machine.
