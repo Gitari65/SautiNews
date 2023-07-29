@@ -1,5 +1,6 @@
 package com.example.sautinews;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -12,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -80,15 +84,51 @@ public class HomeFragment extends Fragment {
     private List<Article> articles,articlesRecent;
     private DatabaseReference articlesRef,articlesRefRecent;
     ProgressBar progressBar;
+    ImageView imageViewNotifications,imageViewBookmarks,imageViewLogout;
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View view= inflater.inflate(R.layout.fragment_home, container, false);
        progressBar=view.findViewById(R.id.progressBarHomeFragemnt);
+        imageViewLogout=view.findViewById(R.id.imageViewLogout);
+
+        imageViewBookmarks=view.findViewById(R.id.imageViewBookmarksHome);
+        imageViewNotifications=view.findViewById(R.id.imageViewNotificationsHome);
         recyclerView = view.findViewById(R.id.MyArticlerecyclerView);
         recyclerViewRecent=view.findViewById(R.id.RecentArticleRecyclerView);
         recyclerViewSuggestion = view.findViewById(R.id.SuggestionrecyclerView);
+
+
+        imageViewLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                // Navigate to the login screen or any other appropriate screen
+                // For example:
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+                // Optional: Call finish() to close the current activity
+            }
+        });
+        imageViewNotifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shakeAnimation(imageViewNotifications);
+            }
+        });
+        imageViewBookmarks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shakeAnimation(imageViewBookmarks);
+                Fragment selectedFragment =new BookmarkFragment();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, selectedFragment)
+                        .commit();
+            }
+        });
+
         checkProfileComplete();
         // Set up LinearLayoutManager with horizontal orientation
         // Set up LinearLayoutManager with horizontal orientation for recent articles RecyclerView
@@ -265,6 +305,10 @@ progressBar.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
         });
+    }
+    public  void shakeAnimation(ImageView imageView){
+        Animation animation= AnimationUtils.loadAnimation(getActivity(),R.anim.shake_animation);
+        imageView.startAnimation(animation);
     }
 
 }
