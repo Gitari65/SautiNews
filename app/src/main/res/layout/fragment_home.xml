@@ -12,7 +12,57 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:id="@+id/layout_linear"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Spark"
+                    android:textSize="21sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/orange"
+                    android:text="Verse"
+                    android:textSize="21sp"
+                    />
 
+
+                <ImageView
+                    android:id="@+id/imageViewSearch"
+                    android:layout_width="51dp"
+                    android:layout_height="39dp"
+                    android:layout_marginLeft="40dp"
+                   android:src="@drawable/icon_search2" />
+
+                <ImageView
+                    android:id="@+id/imageViewNotificationsHome"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_marginLeft="50dp"
+                    android:src="@drawable/bell" />
+
+                <ImageView
+                    android:id="@+id/imageViewBookmarksHome"
+                    android:layout_width="26dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_height="26dp"
+                    android:src="@drawable/bookmark" />
+
+                <ImageView
+                    android:id="@+id/imageViewLogout"
+                    android:layout_width="39dp"
+                    android:layout_height="26dp"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/icon_logout" />
+
+
+            </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
