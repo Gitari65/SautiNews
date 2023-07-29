@@ -6,67 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".NewsHomePage">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:id="@+id/layout_linear"
-        android:orientation="horizontal">
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Spark"
-    android:textSize="21sp"
-    />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/orange"
-            android:text="Verse"
-            android:textSize="21sp"
-            />
-
-
-        <ImageView
-            android:id="@+id/imageViewSearch"
-            android:layout_width="51dp"
-            android:layout_height="39dp"
-            android:layout_marginLeft="50dp"
-            app:srcCompat="@drawable/icon_search2" />
-
-        <ImageView
-            android:id="@+id/imageViewNotificationsHome"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:layout_marginLeft="50dp"
-            app:srcCompat="@drawable/bell" />
-
-        <ImageView
-            android:id="@+id/imageViewBookmarksHome"
-            android:layout_width="26dp"
-            android:layout_marginLeft="15dp"
-            android:layout_height="26dp"
-            app:srcCompat="@drawable/bookmark" />
-
-        <ImageView
-            android:id="@+id/imageViewLogout"
-            android:layout_width="39dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            app:srcCompat="@drawable/icon_logout" />
-
-
-    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
-        android:layout_height="543dp"
+        android:layout_height="582dp"
         android:layout_above="@+id/bottom_navigation"
-        android:layout_below="@+id/layout_linear"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="6dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="4dp"
         android:layout_marginBottom="16dp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -76,6 +26,7 @@
      android:layout_alignParentStart="true"
      android:layout_alignParentEnd="true"
      android:layout_alignParentTop="false"
+        android:layout_marginBottom="10dp"
      app:menu="@menu/bottom_navigation_menu"
      app:itemIconTint="@drawable/selector_bottom_navigation_bar"
      android:id="@+id/bottom_navigation"/>
