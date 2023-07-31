@@ -26,14 +26,14 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.List;
 
-public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleViewHolder> {
+public class AdapterBookmark extends RecyclerView.Adapter<AdapterBookmark.ArticleViewHolder> {
 
     private List<Article> articles;
     private Context context;
     private String articleTitle,articleContent,articleTime,AuthorId,CoverPicUrl,AuthorName,time,articleId;
 
 
-    public AdapterArticle(List<Article> articles, Context context) {
+    public AdapterBookmark(List<Article> articles, Context context) {
         this.articles = articles;
         this.context = context;
     }
@@ -41,10 +41,10 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.ArticleV
     @NonNull
     @Override
     public ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bookmark_layout, parent, false);
         return new ArticleViewHolder(view);
     }
-Article article;
+    Article article;
     boolean isBookmarked=false;
     @Override
     public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
@@ -59,14 +59,14 @@ Article article;
         String timestamp= String.valueOf(article.getTimestamp());
 
         holder.textViewTime.setText(getFormattedTimestamp(timestamp));
-       String imageUrl=article.getCoverPicUrl();
+        String imageUrl=article.getCoverPicUrl();
 
         Picasso.get()
                 .load(imageUrl).placeholder(R.drawable.news_icon3)
                 .error(R.drawable.news_icon3)  // Set the error placeholder image resource
                 .into(holder.imageViewCoverPic);
 
-articleId=article.getArticleId();
+        articleId=article.getArticleId();
         Log.i(TAG, "onClick: article"+articleId);
         // Set the bookmark icon state based on the 'isArticleBookmarked' field of the Article class
         holder.isArticleBookmarked = article.isBookmarked(); // Use the appropriate method to get the bookmark state
@@ -199,21 +199,13 @@ articleId=article.getArticleId();
         if (days > 1) {
             // More than a day ago
             return days + " days ago";
-        }else if (hours ==1) {
+        }else if (hours > 0) {
             // More than an hour ago
             return hours + " hrs ago";
-        }
-        else if (hours > 1) {
-            // More than an hour ago
-            return hours + " hrs ago";
-        }else if (minutes ==1) {
+        } else if (minutes > 0) {
             // More than a minute ago
             return minutes + " mins ago";
-        }
-        else if (minutes > 1) {
-            // More than a minute ago
-            return minutes + " mins ago";
-        }else {
+        } else {
             // Less than a minute ago or just a few seconds ago
             return seconds+" seconds ago";
         }
@@ -233,29 +225,29 @@ articleId=article.getArticleId();
 
         public ArticleViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageViewCoverPic = itemView.findViewById(R.id.imageViewCoverPic);
-            imageViewBookmark = itemView.findViewById(R.id.imageViewBookmark);
-            textViewTitle = itemView.findViewById(R.id.textViewTitle);
-            textViewAuthorName = itemView.findViewById(R.id.textViewAuthorName);
-            textViewTime = itemView.findViewById(R.id.textViewTime);
+            imageViewCoverPic = itemView.findViewById(R.id.imageViewCoverPicBook);
+            imageViewBookmark = itemView.findViewById(R.id.imageViewBookmarkBook);
+            textViewTitle = itemView.findViewById(R.id.textViewTitleBook);
+            textViewAuthorName = itemView.findViewById(R.id.textViewAuthorNameBook);
+            textViewTime = itemView.findViewById(R.id.textViewTimeBook);
 
-            textViewTitle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        Article article = articles.get(position);
-                        String articleId = article.getArticleId();
-                        String authorId=article.getAuthorId();
-                        Intent intent = new Intent(context.getApplicationContext(), ReadNewsActivity.class);
-                        intent.putExtra("ArticleId", articleId);
-                        intent.putExtra("AuthorId", authorId);
-                        Log.i(TAG, "onClick: articleid" + articleId);
-                        context.startActivity(intent);
-                        updateViewedStatus(articleId,position);
-                    }
-                }
-            });
+textViewTitle.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        int position = getAdapterPosition();
+        if (position != RecyclerView.NO_POSITION) {
+            Article article = articles.get(position);
+            String articleId = article.getArticleId();
+            String authorId=article.getAuthorId();
+            Intent intent = new Intent(context.getApplicationContext(), ReadNewsActivity.class);
+            intent.putExtra("ArticleId", articleId);
+            intent.putExtra("AuthorId", authorId);
+            Log.i(TAG, "onClick: articleid" + articleId);
+            context.startActivity(intent);
+            updateViewedStatus(articleId,position);
+        }
+    }
+});
 
             // Set any click listeners or other functionality here
             imageViewCoverPic.setOnClickListener(new View.OnClickListener() {
