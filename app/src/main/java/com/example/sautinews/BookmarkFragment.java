@@ -1,5 +1,8 @@
 package com.example.sautinews;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,10 +10,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -75,132 +80,104 @@ public class BookmarkFragment extends Fragment {
     DatabaseReference articlesRef;
     AdapterBookmark adapterBookmark;
     RecyclerView recyclerView;
+    LottieAnimationView lottieAnimationView;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_bookmark, container, false);
         recyclerView=view.findViewById(R.id.recyclerViewBookmarks);
-
+lottieAnimationView=view.findViewById(R.id.animation_view4);
+lottieAnimationView.setVisibility(View.GONE);
 //        getBookmarkedArticles();
         LinearLayoutManager layoutManagerMyArticles = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManagerMyArticles);
-
+getBookmarkedArticles();
         return view;
     }
-//    public void getBookmarkedArticles() {
-//        // Initialize the list to hold bookmarked Article objects
-//        articles = new ArrayList<>();
-//
-//        // Get the current user's ID
-//        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//
-//        // Get a reference to the "articlesInfo/userId" node in the Firebase Realtime Database
-//        DatabaseReference articlesInfoRef = FirebaseDatabase.getInstance().getReference("articlesInfo").child(currentUserId);
-//
-//        // Set up a ValueEventListener to listen for changes in the data
-//        articlesInfoRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                // Clear the existing list of bookmarked articles
-//                articles.clear();
-//
-//                // Iterate through the dataSnapshot to retrieve article IDs that are bookmarked
-//                for (DataSnapshot articleSnapshot : dataSnapshot.getChildren()) {
-//                    boolean isBookmarked = articleSnapshot.child("isBookmarked").getValue(Boolean.class);
-//                    if (isBookmarked) {
-//                        // Get the article ID from the snapshot key
-//                        String articleId = articleSnapshot.getKey();
-//
-//                        // Get a reference to the specific article node in "Articles/articleId/articleinfo/"
-//                        DatabaseReference articleRef = FirebaseDatabase.getInstance().getReference("Articles").child(articleId);
-//
-//                        // Set up a ValueEventListener to fetch the article information
-//                        articleRef.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                // Get the article data and create an Article object
-//                                Article article = dataSnapshot.getValue(Article.class);
-//                                if (article != null) {
-//                                    articles.add(article);
-//
-//                                    // Create an instance of the adapterBookmark and pass the list of bookmarked articles
-//                                    adapterBookmark = new AdapterBookmark(articles, getActivity());
-//
-//                                    // Set the adapter on the RecyclerView
-//                                    recyclerView.setAdapter(adapterBookmark);
-//                                    // Notify the adapter that the data has changed
-//                                    adapterBookmark.notifyDataSetChanged();
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                                // Handle the error
-//                            }
-//                        });
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                // Handle the error
-//            }
-//        });
-//    }
-//    public void getBookmarkedArticles(){
-//        // Assuming you already have the userId of the authenticated user
-//        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Replace this with the actual authenticated user's ID
-//        DatabaseReference articlesRef = FirebaseDatabase.getInstance().getReference().child("Articles");
-//
-//        articlesRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                articleList = new ArrayList<>();
-//                adapterArticle = new AdapterArticle(articleList, getActivity());
-//
-//                for (DataSnapshot articleSnapshot : dataSnapshot.getChildren()) {
-//                    // Extract the Article data from the dataSnapshot
-//                    Article article = articleSnapshot.getValue(Article.class);
-//
-//                    // Get the articleId from the snapshot's key
-//                    String articleId = articleSnapshot.getKey();
-//
-//                    // Create a DatabaseReference to fetch the bookmark status for the article
-//                    DatabaseReference bookmarkRef = FirebaseDatabase.getInstance().getReference().child("articleInfo").child(userId).child(articleId);
-//
-//                    // Check if the article is bookmarked for the current user
-//                    bookmarkRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            boolean isBookmarked = snapshot.exists(); // Check if the bookmark data exists for this user
-//
-//                            // Create an ArticleWithBookmark object and add it to the list
-//                            ArticleWithBookmark articleWithBookmark = new ArticleWithBookmark(article, isBookmarked);
-//                            articleList.add(articleWithBookmark);
-//
-//                            // Update the RecyclerView when all data is fetched
-//                            if (articleList.size() == dataSnapshot.getChildrenCount()) {
-//                                // Set up the RecyclerView with the data
-//                                recyclerView.setAdapter(adapterArticle);
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError databaseError) {
-//                            // Handle the error if necessary
-//                        }
-//                    });
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                // Handle the error if necessary
-//            }
-//        });
-//    }
+    public void getBookmarkedArticles() {
+        // Initialize the list to hold Article objects
+        bookmarkArticles = new ArrayList<>();
+
+        // Get the current user's ID
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Get a reference to the "articlesInfo" node in the Firebase Realtime Database for the current user
+        DatabaseReference articlesInfoRef = FirebaseDatabase.getInstance().getReference("articlesInfo").child(currentUserId);
+
+        // Set up a ValueEventListener to listen for changes in the data
+        articlesInfoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Clear the existing list of bookmarked articles
+                bookmarkArticles.clear();
+
+                // Iterate through the dataSnapshot to retrieve the bookmarked article IDs
+                for (DataSnapshot articleSnapshot : snapshot.getChildren()) {
+                    Article article2 = articleSnapshot.getValue(Article.class);
+
+                    if (article2 != null) {
+                        boolean isBookmarked = article2.isBookmarked();
+                        String articleId = articleSnapshot.getKey();
+                        Log.i(TAG, "onDataChange: "+articleId);
+                        // If the article is bookmarked, fetch the article information from the "Articles" node
+                        if (isBookmarked) {
+                            // Get a reference to the "Articles" node in the Firebase Realtime Database
+                            DatabaseReference articlesRef = FirebaseDatabase.getInstance().getReference("").child("Articles").child("published");
+
+
+                            // Set up a ValueEventListener to fetch the article information
+                            articlesRef.child(articleId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    // Get the article data and create an Article object
+                                    Article article = dataSnapshot.getValue(Article.class);
+
+                                    if (article != null) {
+                                        bookmarkArticles.add(article);
+
+                                        // Sort the list by timestamp in descending order
+                                        Collections.sort(bookmarkArticles, new Comparator<Article>() {
+                                            @Override
+                                            public int compare(Article article1, Article article2) {
+                                                return article2.getTimestamp().compareTo(article1.getTimestamp());
+                                            }
+                                        });
+
+                                        // Create an instance of the AdapterBookmark and pass the list of articles
+                                        adapterBookmark = new AdapterBookmark(bookmarkArticles, getActivity());
+
+                                        // Set the adapter on the RecyclerView
+                                        recyclerView.setAdapter(adapterBookmark);
+
+                                        // Notify the adapter that the data has changed
+                                        adapterBookmark.notifyDataSetChanged();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    // Handle the error if needed
+                                    lottieAnimationView.setVisibility(View.VISIBLE);
+                                }
+                            });
+                        }
+                    }
+                    // Get the value of 'isBookmarked' field for this article
+else {
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle the error if needed
+            }
+        });
+    }
+
 
 }
