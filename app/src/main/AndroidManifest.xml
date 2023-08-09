@@ -31,9 +31,6 @@
         </receiver>
 
         <activity
-            android:name=".EditArticleActivity"
-            android:exported="true" />
-        <activity
             android:name=".NotificationMainActifity"
             android:exported="true" />
         <activity
