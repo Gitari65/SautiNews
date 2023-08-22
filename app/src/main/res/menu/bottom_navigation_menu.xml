@@ -17,7 +17,7 @@
         android:title="Verse"
         />
     <item android:id="@+id/bottom_Profile"
-        android:icon="@drawable/inbox_icon"
+        android:icon="@drawable/read_inbox_icon"
         android:title="Inbox"
        />
 </menu>

@@ -50,12 +50,13 @@ public class NewsHomePage extends AppCompatActivity {
                             // Handle Home selection
                             break;
                         case R.id.bottom_Create:
-                            Intent intent=new Intent(NewsHomePage.this,EditArticleActivity.class);
-                            startActivity(intent);
+                            selectedFragment=new CreateArticleFragment();
+                            // Handle Home selection
+                            break;
 
 
                             // Handle Search selection
-                            break;
+
                         case R.id.bottom_Explore:
                             selectedFragment=new ExploreFragment();
                             // Handle Notifications selection
