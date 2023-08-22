@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -57,13 +58,16 @@
                     android:textSize="18sp" />
 
             </LinearLayout>
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="341dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_edged_field"
                 android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rounded_edged_field"
                 android:gravity="center"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
@@ -79,10 +83,6 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     app:srcCompat="@android:drawable/ic_menu_gallery" />
-
-
-
-
 
 
             </LinearLayout>
@@ -115,6 +115,7 @@
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
+                android:layout_marginBottom="20dp"
                 android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -276,12 +277,20 @@
             <EditText
                 android:id="@+id/editTextArticleContent"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:background="#75CCCBCB"
                 android:gravity="start|top"
+                android:padding="10dp"
                 android:layout_marginBottom="20dp"
-                android:hint="Write your article here..."
+                android:hint="Write your content here..."
                 android:inputType="textMultiLine" />
+
+
+            <ImageView
+                android:id="@+id/imageViewAdd1"
+                android:layout_width="49dp"
+                android:layout_height="38dp"
+                android:src="@drawable/icon_addsign" />
 
             <ProgressBar
                 android:id="@+id/progressBarEdit"

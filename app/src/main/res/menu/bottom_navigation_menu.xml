@@ -13,11 +13,11 @@
         android:title="Create"
         android:enabled="true"/>
     <item android:id="@+id/bottom_Article"
-        android:icon="@drawable/icon_article"
-        android:title="My Articles"
+        android:icon="@drawable/mic"
+        android:title="Verse"
         />
     <item android:id="@+id/bottom_Profile"
-        android:icon="@drawable/icon_user_profile"
-        android:title="Profile"
+        android:icon="@drawable/inbox_icon"
+        android:title="Inbox"
        />
 </menu>
