@@ -35,9 +35,9 @@ public class NewsHomePage extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentContainer, selectedFragment)
                 .commit();
-      
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+    BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
             // Set the listener for item selection
             bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
