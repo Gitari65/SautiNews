@@ -56,4 +56,10 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
     implementation 'com.hbb20:ccp:2.6.0'
+
+    //audio/video calls
+    implementation "com.jakewharton:butterknife:10.2.1"
+    annotationProcessor'com.jakewharton:butterknife compiler:10.2.1'
+
+    implementation 'com.google.android.material:material:1.9.0'
 }
