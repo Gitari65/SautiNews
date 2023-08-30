@@ -12,11 +12,11 @@
         android:icon="@drawable/add_article"
         android:title="Create"
         android:enabled="true"/>
-    <item android:id="@+id/bottom_Article"
+    <item android:id="@+id/bottom_Verse"
         android:icon="@drawable/mic"
         android:title="Verse"
         />
-    <item android:id="@+id/bottom_Profile"
+    <item android:id="@+id/bottom_inbox"
         android:icon="@drawable/read_inbox_icon"
         android:title="Inbox"
        />
