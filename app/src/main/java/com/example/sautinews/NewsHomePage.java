@@ -61,11 +61,12 @@ public class NewsHomePage extends AppCompatActivity {
                             selectedFragment=new ExploreFragment();
                             // Handle Notifications selection
                             break;
-                        case R.id.bottom_Profile:
+                        case R.id.bottom_inbox:
                             // Handle Profile selection
                             break;
-                        case R.id.bottom_Article:
+                        case R.id.bottom_Verse:
                             // Handle Profile selection
+                            selectedFragment=new AudioCallFragment();
                             break;
                     }
                     if (selectedFragment != null) {
